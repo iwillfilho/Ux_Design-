@@ -1,7 +1,7 @@
 % =====================================================================
 %  Colmeia de Morville Aplicada a 4 Softwares
 %  Design Colaborativo - FEELT31623 - UFU - Prof. Renato Carrijo - 2026/2
-%  Compilar com: pdflatex colmeia_morville.tex
+%  Compilar com: latexmk -pdf -interaction=nonstopmode UX_final.tex
 % =====================================================================
 \documentclass[10pt,a4paper]{article}
 
@@ -62,7 +62,7 @@
     \textcolor{white}{\bfseries #1}\hfill
     \textcolor{white}{\bfseries\itshape\small #2}%
     \vspace{4pt}}}%
-  \par\vspace{10pt}}
+  \par\vspace{8pt}}
 
 % Linha simples (rótulo | conteúdo)
 \newcommand{\linha}[2]{#1 & #2 \\ \hline}
@@ -73,13 +73,13 @@
 
 % Ambiente de tabela da ficha
 \newenvironment{tabela}
-  {\small\renewcommand{\arraystretch}{1.25}%
+  {\small\renewcommand{\arraystretch}{1.22}%
    \noindent\tabularx{\linewidth}{|L|Y|}\hline}
-  {\endtabularx\par\vspace{9pt}}
+  {\endtabularx\par\vspace{7pt}}
 
 % Caixa "Melhoria proposta"
 \newcommand{\melhoria}[1]{%
-  {\small\renewcommand{\arraystretch}{1.25}%
+  {\small\renewcommand{\arraystretch}{1.22}%
    \arrayrulecolor{gold}\setlength{\arrayrulewidth}{0.8pt}%
    \noindent
    \begin{tabularx}{\linewidth}{|>{\columncolor{cream}\raggedright\arraybackslash}p{3.4cm}|>{\columncolor{cream}\raggedright\arraybackslash\leavevmode\color{bodytext}}X|}
@@ -96,25 +96,61 @@
 % ---------------------------------------------------------------------
 %  Capa / identificação
 % ---------------------------------------------------------------------
-{\color{navytext}\fontsize{17}{21}\selectfont\bfseries Colmeia de Morville Aplicada a 4 Softwares\par}
-\vspace{3pt}
+{\color{navytext}\fontsize{16}{20}\selectfont\bfseries Colmeia de Morville Aplicada a 4 Softwares\par}
+\vspace{2pt}
 {\color{subtle}\small Relatório Técnico de Avaliação de Experiência do Usuário (UX) e Usabilidade\par}
-\vspace{12pt}
+\vspace{8pt}
 
-{\small\renewcommand{\arraystretch}{1.3}%
+{\small\renewcommand{\arraystretch}{1.22}%
 \noindent
 \begin{tabularx}{\linewidth}{|>{\leavevmode\color{labeltext}}p{3.4cm}|>{\leavevmode\color{bodytext}}X|>{\leavevmode\color{labeltext}}p{3.2cm}|>{\leavevmode\color{bodytext}}X|}
 \hline
-Nome do Grupo & Prisma UX Design        & Líder do Grupo & [Nome do Líder] \\ \hline
-Integrante 2  & [Nome do Integrante 2] & Integrante 3   & [Nome do Integrante 3] \\ \hline
-Integrante 4  & [Nome do Integrante 4] & Integrante 5   & [Nome do Integrante 5] \\ \hline
+Nome do Grupo & Prisma UX Design                & Líder do Grupo & Wilson Ribeiro de Andrade Filho \\ \hline
+Integrante 2  & Emanuel Campos                  & Integrante 3   & --- \\ \hline
+Integrante 4  & ---                             & Integrante 5   & --- \\ \hline
 \end{tabularx}\par}
-\vspace{12pt}
+\vspace{8pt}
 
 % =====================================================================
-%  FICHA 1 — DUOLINGO
+%  FICHA 1 — FIGMA
 % =====================================================================
-\ficha{FICHA 1 --- SOFTWARE 2: DUOLINGO}{Análise de Interface Móvel}
+\ficha{FICHA 1 --- SOFTWARE 1: FIGMA}{Análise de Prototipagem e Design Colaborativo}
+
+\begin{tabela}
+\linha{Software escolhido}{\textbf{Figma} (Web / Desktop App)}
+\linha{Tarefa}{Criar um componente com variantes e compartilhar o protótipo interativo com a equipe.}
+\linha{Persona}{Designer de produto colaborando com desenvolvedores e \textit{stakeholders} em um \textit{design system}.}
+\linha{Contexto}{Desktop/notebook em ambiente de trabalho remoto ou escritório, com teclado, mouse/trackpad e conexão estável.}
+\linha{Critério de sucesso}{Configurar o componente, vincular a interação e disponibilizar o link de reprodução em menos de 3 minutos.}
+\end{tabela}
+
+\begin{tabela}
+\secao{PRINCÍPIOS DE INTERAÇÃO E ERGONOMIA DIGITAL}
+\linha{Lei de Fitts}{Barra de ferramentas superior e painel de propriedades apresentam alta área de clique; botões principais de ação (\textit{Share} e \textit{Present}) situam-se no canto superior direito de fácil alcance.}
+\linha{Lei de Hick}{O painel lateral de propriedades exibe seções contextuais dinâmicas (Design, Prototype, Inspect), apresentando apenas parâmetros correspondentes ao objeto selecionado.}
+\linha{Thumb zones}{N/A (foco em Desktop/Web); na aplicação complementar móvel (\textit{Figma Mirror}), a navegação e seleção de telas fixam-se no terço inferior da tela.}
+\linha{Microinteração}{Ao arrastar conectores de protótipo entre quadros, surge indicação magnética com nó azul pulsante e linha elástica orientando o ponto de ligação.}
+\linha{Tipografia}{Tipografia com fonte Inter sem serifa, escala visual padronizada, contraste adequado sobre temas claro e escuro e visualização prévia de fontes em tempo real.}
+\end{tabela}
+
+\begin{tabela}
+\secao{COLMEIA DA EXPERIÊNCIA DE MORVILLE (2004)}
+\linha{Útil}{Centraliza as etapas de ideação, design de telas, documentação e prototipagem navegável em um fluxo único.}
+\linha{Utilizável}{Atalhos universais (V, R, T, F) e recursos como \textit{Auto Layout} automatizam alinhamentos e aceleram o desenho de layouts flexíveis.}
+\linha{Desejável}{Trabalho síncrono (\textit{multiplayer}) com cursores rotulados dos colegas e reações visuais ao vivo estimula engajamento colaborativo.}
+\linha{Encontrável}{Painel de camadas hierárquico com busca integrada e barra de comandos rápidos (\textit{Quick Actions} via \texttt{Ctrl+K}) agilizam a localização de itens.}
+\linha{Acessível}{Renderização gráfica em WebGL restringe navegação por leitores de tela e operação exclusiva via teclado dentro do \textit{canvas}.}
+\linha{Crível}{Sincronização ininterrupta na nuvem com histórico de versões detalhado assegura integridade total dos arquivos contra perdas.}
+\linha{Valioso}{Elimina o compartilhamento manual de arquivos pesados, aproxima design e engenharia (\textit{Dev Mode}) e encurta ciclos de lançamento.}
+\end{tabela}
+
+\melhoria{Integrar ferramenta nativa de inspeção de contraste de cores (WCAG AA/AAA) no painel de estilo, sinalizando inconformidades de acessibilidade em tempo real durante a edição, fortalecendo as facetas \textbf{Acessível} e \textbf{Utilizável}. \metrica{} proporção de componentes com contraste aprovado na primeira entrega para a equipe de desenvolvimento.}
+
+\newpage
+% =====================================================================
+%  FICHA 2 — DUOLINGO
+% =====================================================================
+\ficha{FICHA 2 --- SOFTWARE 2: DUOLINGO}{Análise de Interface Móvel}
 
 \begin{tabela}
 \linha{Software escolhido}{\textbf{Duolingo} (Aplicativo Móvel)}
@@ -148,9 +184,9 @@ Integrante 4  & [Nome do Integrante 4] & Integrante 5   & [Nome do Integrante 5]
 
 \newpage
 % =====================================================================
-%  FICHA 2 — MIRO
+%  FICHA 3 — MIRO
 % =====================================================================
-\ficha{FICHA 2 --- SOFTWARE 3: MIRO}{Análise de Interface Colaborativa / Desktop}
+\ficha{FICHA 3 --- SOFTWARE 3: MIRO}{Análise de Interface Colaborativa / Desktop}
 
 \begin{tabela}
 \linha{Software escolhido}{\textbf{Miro} (Web / Desktop App)}
@@ -184,9 +220,9 @@ Integrante 4  & [Nome do Integrante 4] & Integrante 5   & [Nome do Integrante 5]
 
 \newpage
 % =====================================================================
-%  FICHA 3 — SPOTIFY
+%  FICHA 4 — SPOTIFY
 % =====================================================================
-\ficha{FICHA 3 --- SOFTWARE 4: SPOTIFY}{Análise de Streaming de Áudio}
+\ficha{FICHA 4 --- SOFTWARE 4: SPOTIFY}{Análise de Streaming de Áudio}
 
 \begin{tabela}
 \linha{Software escolhido}{\textbf{Spotify} (Aplicativo Móvel)}
