@@ -1,5 +1,5 @@
 % =====================================================================
-%  Colmeia de Morville Aplicada a 4 Softwares
+%  Colmeia de Morville Aplicada a 3 Softwares
 %  Design Colaborativo - FEELT31623 - UFU - Prof. Renato Carrijo - 2026/2
 %  Compilar com: latexmk -pdf -interaction=nonstopmode UX_final.tex
 % =====================================================================
@@ -17,6 +17,10 @@
 \usepackage{tabularx}
 \usepackage{array}
 \usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Colmeia de Morville Aplicada a 3 Softwares},
+            pdfauthor={Prisma UX Design}}
 
 % ---------------------------------------------------------------------
 %  Paleta
@@ -33,7 +37,7 @@
 \definecolor{amber}{HTML}{B45309}     % rótulo da melhoria
 
 % ---------------------------------------------------------------------
-%  Cabeçalho
+%  Cabeçalho e rodapé
 % ---------------------------------------------------------------------
 \pagestyle{fancy}
 \fancyhf{}
@@ -41,6 +45,7 @@
 \fancyhead[R]{\footnotesize\color{subtle}%
   \begin{tabular}[b]{@{}r@{}}Universidade Federal de Uberlândia\\
   Prof. Renato Carrijo \textbullet\ 2026/2\end{tabular}}
+\fancyfoot[C]{\footnotesize\color{subtle}\thepage}
 \renewcommand{\headrulewidth}{0.8pt}
 \renewcommand{\headrule}{{\color{navytext}\hrule height\headrulewidth width\headwidth}}
 
@@ -67,6 +72,14 @@
 % Linha simples (rótulo | conteúdo)
 \newcommand{\linha}[2]{#1 & #2 \\ \hline}
 
+% Nota de 1 a 5 em pontos (preenchidos em navy, vazios em cinza)
+\newcommand{\nota}[1]{\tikz[baseline=-0.6ex]{\foreach \i in {1,...,5}{%
+  \ifnum\i>#1\relax\def\notacor{gridline!60}\else\def\notacor{navy}\fi
+  \fill[\notacor] (\i*6pt,0) circle (2.1pt);}}}
+
+% Linha de faceta da Colmeia (rótulo + nota | conteúdo)
+\newcommand{\faceta}[3]{\linha{#1\hfill\nota{#2}}{#3}}
+
 % Linha de seção
 \newcommand{\secao}[1]{%
   \multicolumn{2}{|>{\columncolor{secbg}}l|}{\textcolor{navytext}{\bfseries\footnotesize #1}} \\ \hline}
@@ -90,168 +103,196 @@
 
 \newcommand{\metrica}{\textcolor{labeltext}{\bfseries Métrica sugerida:}}
 
+% Favo hexagonal da Colmeia: {posição}{nota}{rótulo}
+\newcommand{\favoR}{0.7cm}   % raio do hexágono
+\newcommand{\favoD}{1.22cm}  % distância entre centros vizinhos
+\newcommand{\favo}[3]{%
+  \ifcase#2\relax
+  \or\def\favocor{navy!15}\def\favotxt{navytext}%
+  \or\def\favocor{navy!30}\def\favotxt{navytext}%
+  \or\def\favocor{navy!50}\def\favotxt{navytext}%
+  \or\def\favocor{navy!75}\def\favotxt{white}%
+  \or\def\favocor{navy}\def\favotxt{white}\fi
+  \begin{scope}[shift={#1}]
+    \filldraw[fill=\favocor, draw=white, line width=1.2pt]
+      (30:\favoR) -- (90:\favoR) -- (150:\favoR) -- (210:\favoR) -- (270:\favoR) -- (330:\favoR) -- cycle;
+    \node[text=\favotxt, align=center, font=\fontsize{5}{6}\selectfont] at (0,0)
+      {#3\\[1pt]{\fontsize{8}{9}\selectfont\bfseries #2}};
+  \end{scope}}
+
+% Colmeia completa (disposição de Morville, Valioso no centro):
+% {x}{nome}{útil}{utilizável}{desejável}{encontrável}{acessível}{crível}{valioso}
+\newcommand{\colmeia}[9]{%
+  \begin{scope}[shift={(#1,0)}]
+    \favo{(120:\favoD)}{#3}{Útil}
+    \favo{(60:\favoD)}{#4}{Utilizável}
+    \favo{(180:\favoD)}{#5}{Desejável}
+    \favo{(0:\favoD)}{#6}{Encontrável}
+    \favo{(240:\favoD)}{#7}{Acessível}
+    \favo{(300:\favoD)}{#8}{Crível}
+    \favo{(0,0)}{#9}{Valioso}
+    \node[font=\small\bfseries, text=navytext, anchor=base] at (0,-2.2) {#2};
+  \end{scope}}
+
 % =====================================================================
 \begin{document}
 
 % ---------------------------------------------------------------------
 %  Capa / identificação
 % ---------------------------------------------------------------------
-{\color{navytext}\fontsize{16}{20}\selectfont\bfseries Colmeia de Morville Aplicada a 4 Softwares\par}
+{\color{navytext}\fontsize{16}{20}\selectfont\bfseries Colmeia de Morville Aplicada a 3 Softwares\par}
 \vspace{2pt}
-{\color{subtle}\small Relatório Técnico de Avaliação de Experiência do Usuário (UX) e Usabilidade\par}
+{\color{subtle}\small Relatório de Avaliação da Experiência do Usuário (UX) e da Facilidade de Uso\par}
 \vspace{8pt}
 
 {\small\renewcommand{\arraystretch}{1.22}%
 \noindent
 \begin{tabularx}{\linewidth}{|>{\leavevmode\color{labeltext}}p{3.4cm}|>{\leavevmode\color{bodytext}}X|>{\leavevmode\color{labeltext}}p{3.2cm}|>{\leavevmode\color{bodytext}}X|}
 \hline
-Nome do Grupo & Prisma UX Design                & Líder do Grupo & Wilson Ribeiro de Andrade Filho \\ \hline
-Integrante 2  & Emanuel Campos                  & Integrante 3   & --- \\ \hline
-Integrante 4  & ---                             & Integrante 5   & --- \\ \hline
+Nome do Grupo & Prisma UX Design                & Líder do Grupo & Wilson Ribeiro de Andrade Filho \newline Matrícula: 12311ECP006 \\ \hline
+Integrante 2  & José Mendes de Sousa \newline Matrícula: 12211ECP012 & Integrante 3 & José Lucas Lira \newline Matrícula: 12411ECP005 \\ \hline
+Integrante 4  & Ana Flávia de Oliveira \newline Matrícula: 12411ECP025 & Integrante 5 & Emanuel Simões Campos \newline Matrícula: 12311ECP031 \\ \hline
 \end{tabularx}\par}
 \vspace{8pt}
 
 % =====================================================================
-%  FICHA 1 — FIGMA
+%  FICHA 1 — DUOLINGO
 % =====================================================================
-\ficha{FICHA 1 --- SOFTWARE 1: FIGMA}{Análise de Prototipagem e Design Colaborativo}
+\ficha{FICHA 1 --- SOFTWARE 1: DUOLINGO}{Análise de Aplicativo para Celular}
 
 \begin{tabela}
-\linha{Software escolhido}{\textbf{Figma} (Web / Desktop App)}
-\linha{Tarefa}{Criar um componente com variantes e compartilhar o protótipo interativo com a equipe.}
-\linha{Persona}{Designer de produto colaborando com desenvolvedores e \textit{stakeholders} em um \textit{design system}.}
-\linha{Contexto}{Desktop/notebook em ambiente de trabalho remoto ou escritório, com teclado, mouse/trackpad e conexão estável.}
-\linha{Critério de sucesso}{Configurar o componente, vincular a interação e disponibilizar o link de reprodução em menos de 3 minutos.}
+\linha{Software escolhido}{\textbf{Duolingo} (aplicativo para celular)}
+\linha{Tarefa}{Concluir uma lição diária de vocabulário básico.}
+\linha{Persona}{Estudante iniciante no idioma, que estuda nos intervalos livres do dia e se motiva com pequenas conquistas.}
+\linha{Contexto}{Celular na mão, no ônibus ou numa pausa do trabalho, com o som ligado ou desligado.}
+\linha{Critério de sucesso}{Terminar a lição em menos de 5 minutos, sem perder a sequência de dias seguidos (ofensiva) e sem esgotar as vidas.}
 \end{tabela}
 
 \begin{tabela}
 \secao{PRINCÍPIOS DE INTERAÇÃO E ERGONOMIA DIGITAL}
-\linha{Lei de Fitts}{Barra de ferramentas superior e painel de propriedades apresentam alta área de clique; botões principais de ação (\textit{Share} e \textit{Present}) situam-se no canto superior direito de fácil alcance.}
-\linha{Lei de Hick}{O painel lateral de propriedades exibe seções contextuais dinâmicas (Design, Prototype, Inspect), apresentando apenas parâmetros correspondentes ao objeto selecionado.}
-\linha{Thumb zones}{N/A (foco em Desktop/Web); na aplicação complementar móvel (\textit{Figma Mirror}), a navegação e seleção de telas fixam-se no terço inferior da tela.}
-\linha{Microinteração}{Ao arrastar conectores de protótipo entre quadros, surge indicação magnética com nó azul pulsante e linha elástica orientando o ponto de ligação.}
-\linha{Tipografia}{Tipografia com fonte Inter sem serifa, escala visual padronizada, contraste adequado sobre temas claro e escuro e visualização prévia de fontes em tempo real.}
+\linha{Lei de Fitts}{O botão ``Verificar/Continuar'' ocupa toda a largura da parte de baixo da tela, e as respostas são blocos grandes, fáceis de tocar.}
+\linha{Lei de Hick}{Cada exercício mostra poucas alternativas por vez (em geral 3 ou 4), então a escolha é rápida.}
+\linha{Thumb zones}{O botão ``Verificar'' fica fixo na parte de baixo da tela, onde o polegar alcança naturalmente.}
+\linha{Microinteração}{Ao acertar, a faixa de baixo fica verde com uma mensagem de incentivo, um som de acerto e uma vibração curta.}
+\linha{Tipografia}{Letras grandes e arredondadas (Feather Bold nos títulos e DIN Next Rounded no restante), com bom contraste entre os cartões e o fundo.}
 \end{tabela}
 
 \begin{tabela}
 \secao{COLMEIA DA EXPERIÊNCIA DE MORVILLE (2004)}
-\linha{Útil}{Centraliza as etapas de ideação, design de telas, documentação e prototipagem navegável em um fluxo único.}
-\linha{Utilizável}{Atalhos universais (V, R, T, F) e recursos como \textit{Auto Layout} automatizam alinhamentos e aceleram o desenho de layouts flexíveis.}
-\linha{Desejável}{Trabalho síncrono (\textit{multiplayer}) com cursores rotulados dos colegas e reações visuais ao vivo estimula engajamento colaborativo.}
-\linha{Encontrável}{Painel de camadas hierárquico com busca integrada e barra de comandos rápidos (\textit{Quick Actions} via \texttt{Ctrl+K}) agilizam a localização de itens.}
-\linha{Acessível}{Renderização gráfica em WebGL restringe navegação por leitores de tela e operação exclusiva via teclado dentro do \textit{canvas}.}
-\linha{Crível}{Sincronização ininterrupta na nuvem com histórico de versões detalhado assegura integridade total dos arquivos contra perdas.}
-\linha{Valioso}{Elimina o compartilhamento manual de arquivos pesados, aproxima design e engenharia (\textit{Dev Mode}) e encurta ciclos de lançamento.}
+\faceta{Útil}{3}{Ajuda a criar o hábito de estudar todo dia e a memorizar palavras básicas, mas explica pouco a gramática quando o usuário erra.}
+\faceta{Utilizável}{4}{As perguntas de uma lição seguem em sequência, sem telas ou passos complicados no meio.}
+\faceta{Desejável}{5}{Visual amigável, animações do mascote Duo e recompensas deixam o uso divertido e prendem a atenção.}
+\faceta{Encontrável}{4}{A trilha de lições aparece logo na tela inicial, em ordem, sem que seja preciso procurá-la.}
+\faceta{Acessível}{3}{Dá para pausar os exercícios de áudio e fala (``Não posso ouvir/falar agora''), o que ajuda em lugares barulhentos ou para quem tem dificuldade para ouvir ou falar.}
+\faceta{Crível}{3}{Os cursos seguem os níveis do Quadro Europeu Comum de Referência para Línguas e mostram o progresso na hora; porém, às vezes uma tradução correta é marcada como errada.}
+\faceta{Valioso}{4}{O usuário aprende de graça em sessões curtas; a empresa ganha com anúncios e assinaturas (Super e Max), graças ao uso diário.}
 \end{tabela}
 
-\melhoria{Integrar ferramenta nativa de inspeção de contraste de cores (WCAG AA/AAA) no painel de estilo, sinalizando inconformidades de acessibilidade em tempo real durante a edição, fortalecendo as facetas \textbf{Acessível} e \textbf{Utilizável}. \metrica{} proporção de componentes com contraste aprovado na primeira entrega para a equipe de desenvolvimento.}
+\melhoria{Mostrar, também no plano gratuito, uma explicação simples de gramática na própria tela de erro (hoje isso só existe no ``Explicar minha resposta'' do Duolingo Max e nas Dicas da unidade). Isso fortalece as facetas \textbf{Útil} e \textbf{Crível} e evita que o usuário aprenda só por tentativa e erro. \metrica{} quantas vezes o usuário acerta uma questão que já tinha errado antes, comparando um grupo que vê a explicação com outro que não vê (meta: 15 pontos percentuais a mais).}
 
 \newpage
 % =====================================================================
-%  FICHA 2 — DUOLINGO
+%  FICHA 2 — MIRO
 % =====================================================================
-\ficha{FICHA 2 --- SOFTWARE 2: DUOLINGO}{Análise de Interface Móvel}
+\ficha{FICHA 2 --- SOFTWARE 2: MIRO}{Análise de Quadro Colaborativo no Computador}
 
 \begin{tabela}
-\linha{Software escolhido}{\textbf{Duolingo} (Aplicativo Móvel)}
-\linha{Tarefa}{Concluir uma lição diária de vocabulário básico no aplicativo móvel.}
-\linha{Persona}{Estudante iniciante no idioma, estudando em pequenos intervalos livres do dia, motivado por conquistas rápidas.}
-\linha{Contexto}{Celular na mão, em transporte público ou pausa do trabalho, com áudio opcional ou ativado.}
-\linha{Critério de sucesso}{Concluir a lição em menos de 5 minutos mantendo a ofensiva (\textit{streak}) sem perder todas as vidas.}
+\linha{Software escolhido}{\textbf{Miro} (navegador e aplicativo para computador)}
+\linha{Tarefa}{Organizar ideias em notas adesivas virtuais e ligá-las entre si, ao vivo, durante uma reunião.}
+\linha{Persona}{Designer ou gerente de produto numa reunião on-line de troca de ideias (\textit{brainstorming}), usando o computador.}
+\linha{Contexto}{Tela de computador, mouse ou \textit{trackpad} e teclado, com a chamada de vídeo aberta ao mesmo tempo.}
+\linha{Critério de sucesso}{Organizar 5 ideias em notas e ligá-las em menos de 2 minutos, sem atrapalhar o andamento da reunião.}
 \end{tabela}
 
 \begin{tabela}
 \secao{PRINCÍPIOS DE INTERAÇÃO E ERGONOMIA DIGITAL}
-\linha{Lei de Fitts}{Botões de opção de resposta e o botão principal ``Verificar/Continuar'' ocupam a largura inferior total da tela, com alta área de toque.}
-\linha{Lei de Hick}{Exercícios apresentam poucas alternativas por tela (geralmente 3 a 4 blocos de palavras ou múltipla escolha), agilizando a resposta.}
-\linha{Thumb zones}{O botão de confirmação e progresso (``Verificar'') fica fixado no rodapé, na zona natural do polegar.}
-\linha{Microinteração}{Ao acertar uma questão, a barra inferior fica verde instantaneamente acompanhada de som agudo e vibração háptica curta.}
-\linha{Tipografia}{Fonte Feather sem serifa, em corpo grande, com contraste elevado entre os \textit{cards} de texto e o fundo.}
+\linha{Lei de Fitts}{Os ícones da barra lateral de ferramentas são bem espaçados, mas os pontos usados para ligar setas entre as formas são pequenos e exigem mira precisa com o mouse.}
+\linha{Lei de Hick}{Ao selecionar uma nota, aparece só uma pequena barra com as opções que fazem sentido (cor, tamanho e formato do texto, etiquetas, link e reações); o resto fica guardado no menu ``\ldots''.}
+\linha{Thumb zones}{Não se aplica (uso no computador); no celular, os botões principais para inserir itens ficam na parte de baixo da tela.}
+\linha{Microinteração}{Ao arrastar uma nota, aparecem linhas coloridas que ajudam a alinhá-la com as vizinhas; com a nota selecionada, botões ``+'' nas bordas criam uma nova nota já ligada à primeira.}
+\linha{Tipografia}{O tamanho da letra se ajusta sozinho para o texto caber dentro da nota enquanto o usuário digita.}
 \end{tabela}
 
 \begin{tabela}
 \secao{COLMEIA DA EXPERIÊNCIA DE MORVILLE (2004)}
-\linha{Útil}{Ajuda a criar o hábito diário de estudo e memorização prática de palavras básicas.}
-\linha{Utilizável}{Fluxo direto e sem interrupções complexas entre as perguntas de uma mesma lição.}
-\linha{Desejável}{Elementos gráficos amigáveis, animações do mascote Duo e sistema de recompensas geram alto engajamento.}
-\linha{Encontrável}{A trilha de aprendizado principal é linear e exibida logo na tela inicial ao abrir o app.}
-\linha{Acessível}{Opção para pular exercícios de áudio/fala quando em ambientes barulhentos ou por limitação auditiva/vocal.}
-\linha{Crível}{Barra de progresso reflete fielmente o percentual concluído da lição em tempo real.}
-\linha{Valioso}{Oferece aprendizado gratuito e constante em trocas curtas de tempo diário.}
+\faceta{Útil}{5}{Reúne num só lugar as ideias de equipes que trabalham a distância.}
+\faceta{Utilizável}{3}{Mover e ampliar o quadro é fácil e há atalhos de uma tecla (ex.: ``N'' cria uma nota), mas ligar setas entre notas exige mira precisa.}
+\faceta{Desejável}{4}{Ver o cursor com o nome de cada colega, reações, cronômetro e votação deixa as dinâmicas em grupo mais animadas.}
+\faceta{Encontrável}{3}{A busca (\texttt{Ctrl/Cmd+F}) e a lista de seções do quadro ajudam a achar conteúdo, mas quadros grandes ficam difíceis de percorrer.}
+\faceta{Acessível}{2}{É difícil navegar pelo quadro, que não tem limites, usando só o teclado, sem o mouse.}
+\faceta{Crível}{4}{Tudo é salvo e sincronizado na hora, sem perda de dados, mesmo com várias pessoas editando o mesmo trecho.}
+\faceta{Valioso}{4}{Substitui o quadro físico e torna mais rápidas as reuniões de alinhamento e as dinâmicas em grupo.}
 \end{tabela}
 
-\melhoria{Adicionar explicação gramatical simplificada acessível diretamente na tela de erro (\textit{pop-up} de dica rápida em vez de apenas mostrar a resposta correta), fortalecendo as facetas \textbf{Utilizável} e \textbf{Útil}, reduzindo a necessidade de tentativa e erro. \metrica{} taxa de acerto na reincidência do mesmo erro antes e depois da mudança.}
+\melhoria{Aumentar a área dos pontos de ligação e mostrar uma prévia da seta quando o cursor se aproxima, fortalecendo a faceta \textbf{Utilizável} e reduzindo a mira exigida pela \textbf{Lei de Fitts}. \metrica{} tempo médio e número de tentativas erradas para ligar 5 notas, em teste com 5 participantes (meta: 30\% menos tempo).}
 
 \newpage
 % =====================================================================
-%  FICHA 3 — MIRO
+%  FICHA 3 — SPOTIFY
 % =====================================================================
-\ficha{FICHA 3 --- SOFTWARE 3: MIRO}{Análise de Interface Colaborativa / Desktop}
+\ficha{FICHA 3 --- SOFTWARE 3: SPOTIFY}{Análise de Aplicativo de Música}
 
 \begin{tabela}
-\linha{Software escolhido}{\textbf{Miro} (Web / Desktop App)}
-\linha{Tarefa}{Criar um mapa mental e adicionar notas adesivas (\textit{post-its}) colaborativas em tempo real durante uma reunião.}
-\linha{Persona}{Designer ou gerente de produto em reunião remota de \textit{brainstorming}, operando no desktop/web.}
-\linha{Contexto}{Monitor de computador, uso de mouse/trackpad e teclado, chamada de áudio/vídeo rodando simultaneamente.}
-\linha{Critério de sucesso}{Organizar 5 ideias em notas adesivas e conectá-las em menos de 2 minutos sem interromper o fluxo da reunião.}
+\linha{Software escolhido}{\textbf{Spotify} (aplicativo para celular)}
+\linha{Tarefa}{Buscar uma playlist de músicas para treino, salvar uma música na biblioteca e começar a ouvir.}
+\linha{Persona}{Pessoa que ouve música no celular enquanto se desloca ou treina na academia, com o app em segundo plano.}
+\linha{Contexto}{Celular com fones de ouvido sem fio, usando internet móvel (4G/5G).}
+\linha{Critério de sucesso}{Concluir a tarefa em até 30 segundos e com no máximo 6 toques, sem contar a digitação da busca.}
 \end{tabela}
 
 \begin{tabela}
 \secao{PRINCÍPIOS DE INTERAÇÃO E ERGONOMIA DIGITAL}
-\linha{Lei de Fitts}{A barra lateral de ferramentas possui ícones bem espaçados, mas os pontos de conexão de setas entre formas exigem precisão do cursor.}
-\linha{Lei de Hick}{O menu de contexto suspenso ao selecionar um objeto exibe apenas as 5 ações mais frequentes (cor, texto, fonte, link, decolagem).}
-\linha{Thumb zones}{N/A (focado em Desktop); na versão mobile, os controles primários de inserção ficam ancorados no terço inferior da tela.}
-\linha{Microinteração}{Ao arrastar uma nota adesiva para a tela, ela solta uma leve sombra e emite um som discreto de ``papel'', indicando fixação no \textit{canvas}.}
-\linha{Tipografia}{Fontes adaptativas com ajuste automático de tamanho dentro das notas adesivas à medida que o usuário digita.}
+\linha{Lei de Fitts}{O botão verde de tocar, na página da playlist, é grande e fica separado dos demais; no mini-player da parte de baixo, o botão de tocar/pausar é fácil de acertar sem olhar com atenção.}
+\linha{Lei de Hick}{Botões de filtro no topo da tela inicial (Tudo, Música, Podcasts) reduzem o que aparece de uma vez, e cada seção mostra poucos itens por linha.}
+\linha{Thumb zones}{O mini-player e o menu principal (Início, Buscar, Sua Biblioteca) ficam na parte de baixo da tela, fáceis de alcançar com o polegar.}
+\linha{Microinteração}{Ao tocar no ``+'' de uma música, ele vira um sinal de confirmação verde e aparece um aviso rápido de que ela foi salva nas Músicas Curtidas.}
+\linha{Tipografia}{Fonte própria do Spotify (Spotify Mix, desde 2024), em negrito nos títulos de álbuns e playlists, bem legível sobre o fundo escuro.}
 \end{tabela}
 
 \begin{tabela}
 \secao{COLMEIA DA EXPERIÊNCIA DE MORVILLE (2004)}
-\linha{Útil}{Permite a centralização visual de ideias de equipes distribuídas remotamente.}
-\linha{Utilizável}{Navegação por \textit{pan} (arrastar) e zoom fluida e intuitiva semelhante a mapas digitais.}
-\linha{Desejável}{Cursores com os nomes dos colegas movendo-se ao vivo criam sentimento de presença e colaboração.}
-\linha{Encontrável}{Atalhos de teclado (ex: apertar ``N'' para criar nota) facilitam encontrar e inserir elementos rapidamente.}
-\linha{Acessível}{Dificuldade no uso exclusivo por teclado sem mouse para navegar pelo painel infinito.}
-\linha{Crível}{Sincronização em tempo real sem perda de dados mesmo com múltiplos usuários editando a mesma área.}
-\linha{Valioso}{Substitui quadros físicos e acelera alinhamentos estratégicos e dinâmicas de grupo.}
+\faceta{Útil}{5}{Dá acesso imediato a um enorme acervo de músicas e podcasts.}
+\faceta{Utilizável}{3}{A música continua tocando enquanto se navega pelo app, mas salvar uma faixa da lista exige acertar um ícone pequeno ou abrir o menu ``\ldots''.}
+\faceta{Desejável}{5}{Vídeos curtos no fundo das músicas (Canvas) e playlists personalizadas criam uma ligação afetiva com o app.}
+\faceta{Encontrável}{5}{A busca é rápida, completa o texto enquanto se digita e permite filtrar por artista, música ou álbum.}
+\faceta{Acessível}{3}{Funciona com os leitores de tela do celular (VoiceOver/TalkBack) e mostra letras sincronizadas, que ajudam pessoas surdas ou com perda auditiva; mas alguns botões são pequenos.}
+\faceta{Crível}{4}{A música não para ao trocar de faixa, e os downloads para ouvir sem internet mantêm o som estável mesmo com sinal fraco.}
+\faceta{Valioso}{4}{Oferece uma grande biblioteca e recomendações feitas sob medida, em troca da assinatura ou de anúncios.}
 \end{tabela}
 
-\melhoria{Implementar alinhamento magnético automático mais forte e com indicação visual para conectores entre blocos, fortalecendo a faceta \textbf{Utilizável} e reduzindo o tempo de movimento exigido pela \textbf{Lei de Fitts}. \metrica{} tempo médio gasto para alinhar e conectar 5 notas adesivas.}
+\melhoria{Deixar o usuário escolher o que acontece ao deslizar uma música para o lado (hoje ela só vai para a fila), podendo usar esse gesto para salvá-la na biblioteca. Isso dispensa o menu extra e fortalece a faceta \textbf{Utilizável}; pela \textbf{Lei de Fitts}, a área de toque passa a ser a linha inteira. \metrica{} toques e tempo para salvar 3 músicas na biblioteca (meta: de cerca de 9 para 3 toques), em teste com 5 usuários.}
 
 \newpage
 % =====================================================================
-%  FICHA 4 — SPOTIFY
+%  SÍNTESE COMPARATIVA
 % =====================================================================
-\ficha{FICHA 4 --- SOFTWARE 4: SPOTIFY}{Análise de Streaming de Áudio}
+\ficha{SÍNTESE COMPARATIVA}{Colmeia de Morville nos 3 softwares}
 
-\begin{tabela}
-\linha{Software escolhido}{\textbf{Spotify} (Aplicativo Móvel)}
-\linha{Tarefa}{Buscar uma playlist temática de treino, adicionar uma música à biblioteca e iniciar a reprodução.}
-\linha{Persona}{Usuário em deslocamento ou na academia, consumindo conteúdo em segundo plano no \textit{smartphone}.}
-\linha{Contexto}{Celular, uso com fones de ouvido (Bluetooth), possível conexão móvel (4G/5G).}
-\linha{Critério de sucesso}{Iniciar a reprodução da playlist em até 3 toques a partir da tela inicial.}
-\end{tabela}
+{\small\color{bodytext}Cada favo mostra a nota de 1 (fraco) a 5 (excelente) que o grupo deu à faceta, com base no que foi observado nas fichas; quanto mais escuro o favo, maior a nota.\par}
+\vspace{12pt}
 
-\begin{tabela}
-\secao{PRINCÍPIOS DE INTERAÇÃO E ERGONOMIA DIGITAL}
-\linha{Lei de Fitts}{O botão ``Play/Pause'' verde no player flutuante inferior é amplo e fácil de acionar sem olhar com atenção.}
-\linha{Lei de Hick}{A tela ``Início'' categoriza os conteúdos recomendados em poucas seções horizontais (Atalhos, Feito para você, Tocados recentemente).}
-\linha{Thumb zones}{O mini-player e a barra de navegação principal (Início, Buscar, Sua Biblioteca) estão situados na zona de alcance fácil do polegar.}
-\linha{Microinteração}{Ao tocar no ícone de ``Mais/Coração'' para salvar a música, o botão anima com preenchimento verde e surge uma notificação \textit{toast} discreta.}
-\linha{Tipografia}{Fonte Spotify Circular em negrito para títulos de álbuns/playlists, com alto contraste sobre o fundo escuro padrão.}
-\end{tabela}
+\begin{center}
+\begin{tikzpicture}
+  \colmeia{0}{Duolingo}{3}{4}{5}{4}{3}{3}{4}
+  \colmeia{5.5}{Miro}{5}{3}{4}{3}{2}{4}{4}
+  \colmeia{11}{Spotify}{5}{3}{5}{5}{3}{4}{4}
+  % Legenda da escala
+  \node[font=\footnotesize, text=subtle, anchor=east] at (3.9,-2.75) {Escala:};
+  \foreach \n/\c in {1/navy!15, 2/navy!30, 3/navy!50, 4/navy!75, 5/navy} {
+    \filldraw[fill=\c, draw=gridline, line width=0.4pt]
+      ({3.9+0.9*\n-0.6},-2.9) rectangle ++(0.3,0.3);
+    \node[font=\footnotesize, text=subtle, anchor=west] at ({3.9+0.9*\n-0.28},-2.75) {\n};
+  }
+\end{tikzpicture}
+\end{center}
+\vspace{4pt}
 
-\begin{tabela}
-\secao{COLMEIA DA EXPERIÊNCIA DE MORVILLE (2004)}
-\linha{Útil}{Atende com precisão à necessidade de acesso imediato a acervo musical e podcasts.}
-\linha{Utilizável}{Troca rápida entre telas e controle contínuo do áudio mesmo navegando por outras partes do app.}
-\linha{Desejável}{Animações de fundo (Canvas em vídeo) e personalização de playlists geram conexão emocional.}
-\linha{Encontrável}{Mecanismo de busca eficiente com suporte a autocompletar e filtros por artista, música ou álbum.}
-\linha{Acessível}{Letras das músicas sincronizadas em tempo real com ajuste de tamanho de fonte, facilitando a leitura.}
-\linha{Crível}{Transição contínua sem interrupção no fluxo de áudio ao trocar de faixas ou redes.}
-\linha{Valioso}{Oferece grande biblioteca musical e recomendações personalizadas em troca da assinatura ou exibição de anúncios.}
-\end{tabela}
-
-\melhoria{Permitir salvar uma faixa na biblioteca deslizando o \textit{card} da música para a direita diretamente na lista de reprodução, fortalecendo as facetas \textbf{Utilizável} e \textbf{Encontrável}, além de otimizar a \textbf{Lei de Fitts} ao eliminar a necessidade de abrir o menu secundário. \metrica{} quantidade de toques e tempo gasto para salvar 3 músicas seguidas em uma playlist.}
+{\small\renewcommand{\arraystretch}{1.22}%
+\noindent
+\begin{tabularx}{\linewidth}{|Y|}
+\hline
+\rowcolor{secbg}\textcolor{navytext}{\bfseries\footnotesize CONCLUSÃO} \\ \hline
+O Spotify foi o mais bem avaliado dos três, e \textbf{Desejável} foi o ponto mais forte do conjunto: os três aplicativos se esforçam para tornar o uso agradável e trazem benefícios tanto para quem usa quanto para a empresa. Já \textbf{Acessível} foi o ponto mais fraco, principalmente no Miro, cujo quadro sem limites é difícil de usar com leitores de tela ou só com o teclado. As melhorias propostas atacam os pontos mais fracos de cada ficha e trazem uma forma simples de medir se funcionaram. \\ \hline
+\end{tabularx}\par}
 
 \end{document}
