@@ -166,7 +166,7 @@ $\boxtimes$ & 4. Fluxo de tarefas & 10 min & $\boxtimes$ & 8. UX Canvas e pitch 
 
 \vspace{8pt}
 \begin{caixa}[verde]{Como este documento foi montado}
-Cada folha usa o resultado da anterior (golfos $\rightarrow$ cenário $\rightarrow$ HTA $\rightarrow$ fluxo $\rightarrow$ requisitos $\rightarrow$ histórias $\rightarrow$ features $\rightarrow$ canvas). Os códigos se repetem de uma folha para outra para facilitar o rastreio: \textbf{E1--E4} (golfo de execução), \textbf{A1--A4} (golfo de avaliação), \textbf{R1--R4} (requisitos), \textbf{H1--H4} (histórias), \textbf{F1--F9} (features). A última página traz a tabela de rastreabilidade completa. Os problemas de cada passo foram justificados com as heurísticas de Nielsen (H.\,1 a H.\,10) e com as leis de ergonomia (Fitts, zona do polegar).
+Cada folha usa o resultado da anterior (golfos $\rightarrow$ cenário $\rightarrow$ HTA $\rightarrow$ fluxo $\rightarrow$ requisitos $\rightarrow$ histórias $\rightarrow$ features $\rightarrow$ canvas). Os códigos se repetem de uma folha para outra para facilitar o rastreio: \textbf{E1--E4} (golfo de execução), \textbf{A1--A4} (golfo de avaliação), \textbf{R1--R4} (requisitos), \textbf{H1--H4} (histórias), \textbf{F1--F9} (features). A solução (Folha 4) leva a renovação para a tela inicial: um toque no card do livro, e o resto o app resolve em segundo plano. Os problemas de cada passo foram justificados com as heurísticas de Nielsen (H.\,1 a H.\,10) e com as leis de ergonomia (Fitts, zona do polegar).
 \end{caixa}
 
 \newpage
@@ -236,7 +236,7 @@ Obstáculo: & \multicolumn{3}{X}{Sorteado: ``o sinal cai''. Somado ao do caso: a
   \item Mostrar, no próprio livro, \textbf{por que} a renovação está bloqueada e \textbf{como resolver} (E1, E2).
   \item Permitir \textbf{pagar a multa dentro do app}, a partir do mesmo card, e liberar a renovação logo depois (E3, A4).
   \item \textbf{Confirmar} a renovação com a nova data de devolução, que continue visível mesmo sem internet (A1).
-  \item Mostrar o \textbf{estado do pedido} (enviando / pendente / confirmado) e reenviar sozinho quando o sinal voltar, sem pedido duplicado (A2).
+  \item Concluir a renovação \textbf{em segundo plano}: se o sinal cair, reenviar sozinho quando ele voltar, sem pedido duplicado e sem exigir nada do aluno (A2).
   \item \textbf{Avisar antes do vencimento}, com um atalho para renovar (A3).
 \end{enumerate}
 \end{caixa}
@@ -305,99 +305,130 @@ Obstáculo: & \multicolumn{3}{X}{Sorteado: ``o sinal cai''. Somado ao do caso: a
 
 \newpage
 % =====================================================================
-%  FOLHA 4 - FLUXO DE TAREFAS
+%  FOLHA 4 - FLUXO DE TAREFAS (SOLUÇÃO)
 % =====================================================================
 \folha{Folha 4 -- Fluxo de tarefas}{10 min}
 \objetivo{Desenhar o caminho da tarefa, com decisões e tratamento de erro.}
 \passos{(1) Início e Fim. (2) Passos em retângulos, na ordem da árvore. (3) Decisões em losangos, com ``sim'' e ``não''. (4) Ramo de erro e para onde volta. (5) Contem passos e decisões.}
 
+{\small\textbf{Solução proposta:} a renovação sai das abas internas e vai para a \textbf{tela inicial}. Cada livro emprestado é um card num carrossel, com a data e a situação. Um toque no botão verde \textit{Renovar} resolve tudo: o app verifica reserva, débito e rede em segundo plano e só interrompe o aluno quando há débito a pagar.\par}
+\vspace{4pt}
+
 \begin{center}
 \begin{tikzpicture}[
-  font=\scriptsize, >={Stealth[length=5pt]}, node distance=0.42cm,
+  font=\scriptsize, >={Stealth[length=5pt]},
   ini/.style={draw=verde,fill=verdebg,rounded corners=7pt,minimum width=2.1cm,minimum height=0.6cm,font=\footnotesize\bfseries},
-  passo/.style={draw=navy,fill=secbg,minimum width=3.6cm,text width=3.4cm,align=center,minimum height=0.62cm},
-  dec/.style={draw=laranja,fill=laranjabg,diamond,aspect=2.6,inner sep=1pt,align=center,text width=2.5cm},
-  erro/.style={draw=laranja,dashed,line width=0.8pt,fill=white,text width=3.6cm,align=center,minimum height=0.7cm},
+  passo/.style={draw=navy,fill=secbg,text width=3.4cm,align=center,minimum height=0.7cm},
+  ok/.style={passo,draw=verde,fill=verdebg,line width=1pt},
+  dec/.style={draw=laranja,fill=laranjabg,diamond,aspect=2.2,inner sep=0pt,align=center,text width=1.6cm},
+  erro/.style={draw=laranja,dashed,line width=0.8pt,fill=white,text width=2.5cm,align=center,minimum height=0.7cm},
+  back/.style={draw=gridline,dashed,fill=cinzabg!60,rounded corners=3pt,text width=3.5cm,align=flush left,inner sep=5pt,font=\scriptsize\color{bodytext}},
   seta/.style={->,draw=labeltext,line width=0.6pt},
   rot/.style={font=\scriptsize\bfseries,text=amber}
 ]
-  \node[ini] (I) {Início};
-  \node[passo,below=of I] (P1) {Abrir o app};
-  \node[passo,below=of P1] (P2) {Tocar em ``Meus empréstimos''};
-  \node[passo,below=of P2] (P3) {Selecionar ``Cálculo I''};
-  \node[dec,below=of P3] (D1) {Botão \textit{Renovar} ativo?};
-  \node[passo,below=0.62cm of D1] (P4) {Tocar em \textit{Renovar}};
-  \node[dec,below=of P4] (D3) {Servidor respondeu\\em até 10 s?};
-  \node[passo,below=0.62cm of D3] (P6) {Tela ``Renovado até 04/11''\\+ comprovante salvo offline};
-  \node[ini,below=of P6] (F) {Fim};
-  % ramo da multa (esquerda)
-  \node[erro,left=1.5cm of D1] (E1) {\textbf{Erro / exceção:} ``Bloqueado: multa de R\$\,2,00. Toque para pagar.''};
-  \node[passo,below=0.55cm of E1] (P5) {Pagar a multa via Pix\\(no próprio card)};
-  \node[dec,below=0.45cm of P5] (D2) {Pagamento\\confirmado?};
-  % ramo da rede (direita)
-  \node[erro,right=1.5cm of D3] (E2) {\textbf{Erro / exceção:} ``Sem conexão. Pedido salvo; tentando de novo (1/3).''};
-  % setas do caminho principal
+  \node[ini] (I) at (0,0) {Início};
+  \node[passo] (P1) at (0,-1.1) {\textbf{1.} Abrir o app: a home já mostra o carrossel de livros};
+  \node[ok] (P2) at (0,-2.45) {\textbf{2.} Tocar no botão verde \textit{Renovar} no card do livro};
+  \node[dec] (D1) at (0,-4.0) {Débito\\pendente?};
+  \node[passo] (P3) at (4.3,-4.0) {\textbf{3.} Popup ``Débito de R\$\,2,00'': tocar em \textit{Pagar com Pix e renovar}};
+  \node[dec] (D2) at (4.3,-5.65) {Pix\\confirmado?};
+  \node[erro] (E1) at (8.2,-5.65) {\textbf{Erro:} ``Pagamento não confirmado. Toque para tentar de novo.''};
+  \node[ok] (P4) at (0,-7.3) {\textbf{4.} Ticket de confiança: ``Renovado até 04/11'' + QR code, salvo offline};
+  \node[ini] (F) at (0,-8.55) {Fim};
+  \node[back] (B) at (-4.85,-4.75) {\textbf{Escondido do usuário}\\\textbf{(back-end)}\\[3pt]
+    $\bullet$ verifica reserva e débito\\
+    $\bullet$ sem sinal: guarda o pedido e reenvia sozinho (até 3x), sem duplicar\\
+    $\bullet$ confirma o Pix e renova automaticamente\\
+    $\bullet$ gera o ticket e agenda o aviso do próximo prazo};
+  % caminho principal
   \draw[seta] (I) -- (P1);
   \draw[seta] (P1) -- (P2);
-  \draw[seta] (P2) -- (P3);
-  \draw[seta] (P3) -- (D1);
-  \draw[seta] (D1) -- node[rot,right]{Sim} (P4);
-  \draw[seta] (P4) -- (D3);
-  \draw[seta] (D3) -- node[rot,right]{Sim} (P6);
-  \draw[seta] (P6) -- (F);
-  % ramo da multa
-  \draw[seta] (D1) -- node[rot,above]{Não} (E1);
-  \draw[seta] (E1) -- (P5);
-  \draw[seta] (P5) -- (D2);
-  \draw[seta] (D2.west) -- ++(-0.45,0) |- node[rot,pos=0.25,left]{Não} (P5.west);
-  \draw[seta] (D2.east) -- node[rot,above,pos=0.3]{Sim} ++(1.0,0) |- (P4.west);
-  % ramo da rede (volta para tentar de novo)
-  \draw[seta] (D3) -- node[rot,above]{Não} (E2);
-  \draw[seta] (E2.north) |- node[font=\scriptsize,text=amber,pos=0.25,right,align=left]{volta\\(até 3x)} (P4.east);
+  \draw[seta] (P2) -- (D1);
+  \draw[seta] (D1) -- node[rot,right]{Não} (P4);
+  \draw[seta] (P4) -- (F);
+  % ramo do débito
+  \draw[seta] (D1) -- node[rot,above]{Sim} (P3);
+  \draw[seta] (P3) -- (D2);
+  \draw[seta] (D2) -- node[rot,above]{Não} (E1);
+  \draw[seta] (E1.north) |- node[font=\scriptsize,text=amber,pos=0.25,right]{volta} (P3.east);
+  \draw[seta] (D2.south) |- node[rot,pos=0.25,right]{Sim: renova sozinho} (P4.east);
+  % ligação com o back-end
+  \draw[dotted,line width=0.9pt,draw=gridline] (B.north) |- (P2.west);
 \end{tikzpicture}
 \end{center}
 
-\vspace{-4pt}
-\begin{caixa}{Mesmo fluxo em sintaxe Mermaid (\texttt{flowchart TD})}
-\begin{tcbraster}[raster columns=2,raster column skip=6pt,raster equal height,
-  enhanced,colback=white,colframe=white,boxrule=0pt,left=0pt,right=0pt,top=0pt,bottom=0pt]
-\begin{tcolorbox}
-\begin{Verbatim}[fontsize=\scriptsize]
-flowchart TD
-  I([Início]) --> P1[Abrir o app]
-  P1 --> P2[Tocar em Meus empréstimos]
-  P2 --> P3[Selecionar Cálculo I]
-  P3 --> D1{Botão Renovar ativo?}
-  D1 -->|Sim| P4[Tocar em Renovar]
-  D1 -->|Não| E1[Bloqueado: multa de R$ 2,00.
-     Toque para pagar.]:::erro
-  E1 --> P5[Pagar a multa via Pix]
-  P5 --> D2{Pagamento confirmado?}
-\end{Verbatim}
-\end{tcolorbox}
-\begin{tcolorbox}
-\begin{Verbatim}[fontsize=\scriptsize]
-  D2 -->|Não| P5
-  D2 -->|Sim| P4
-  P4 --> D3{Servidor respondeu em até 10 s?}
-  D3 -->|Não| E2[Sem conexão. Pedido salvo;
-     tentando de novo 1/3]:::erro
-  E2 -->|volta, até 3x| P4
-  D3 -->|Sim| P6[Renovado até 04/11
-     + comprovante offline]
-  P6 --> F([Fim])
-  classDef erro stroke-dasharray:5 5,stroke:#E67E22
-\end{Verbatim}
-\end{tcolorbox}
-\end{tcbraster}
+\begin{caixa}[verde]{Como fica na tela (wireframe da solução)}
+\centering
+\begin{tikzpicture}[scale=0.92,transform shape,
+  tela/.style={draw=labeltext,fill=white,rounded corners=8pt,line width=0.8pt},
+  btn/.style={fill=verde,rounded corners=3pt},
+  rot/.style={font=\footnotesize\bfseries,text=navytext},
+  seta/.style={->,>={Stealth[length=5pt]},draw=labeltext,line width=0.6pt}]
+  % ---------- Tela 1: home com carrossel ----------
+  \draw[tela] (0,0) rectangle (4.2,6.4);
+  \node[rot] at (2.1,6.75) {1. Home: carrossel de livros};
+  \node[anchor=west,font=\tiny,text=subtle] at (0.3,6.1) {7:40};
+  \node[anchor=east,font=\tiny\bfseries,text=dor] at (3.9,6.1) {5\%};
+  \node[anchor=west,font=\footnotesize\bfseries,text=navytext] at (0.3,5.6) {Olá, Caio};
+  \node[anchor=west,font=\tiny,text=subtle] at (0.3,5.2) {Meus livros (3)};
+  \draw[gridline,fill=white,rounded corners=3pt] (0.3,1.4) rectangle (3.3,4.9);
+  \fill[navy] (0.5,3.3) rectangle (1.3,4.7);
+  \node[anchor=north west,font=\scriptsize\bfseries,text=labeltext] at (1.4,4.75) {Cálculo I};
+  \node[anchor=north west,font=\tiny,text=subtle] at (1.4,4.35) {Stewart, vol. 1};
+  \node[fill=laranjabg,text=amber,font=\tiny\bfseries,rounded corners=2pt,inner sep=2pt] at (1.8,2.85) {Vence amanhã $\cdot$ 28/10};
+  \fill[btn] (0.5,1.6) rectangle (3.1,2.3);
+  \node[font=\scriptsize\bfseries,text=white] at (1.8,1.95) {Renovar};
+  \draw[gridline,fill=secbg,rounded corners=3pt] (3.45,1.6) rectangle (4.05,4.7);
+  \fill[navy] (1.75,1.0) circle (1.6pt);
+  \fill[gridline] (2.05,1.0) circle (1.6pt);
+  \fill[gridline] (2.35,1.0) circle (1.6pt);
+  \node[font=\tiny,text=subtle] at (2.1,0.5) {deslize para ver os outros livros};
+  % ---------- Tela 2: popup de débito ----------
+  \begin{scope}[xshift=6cm]
+  \draw[tela] (0,0) rectangle (4.2,6.4);
+  \fill[gridline!35,rounded corners=7pt] (0.05,0.05) rectangle (4.15,6.35);
+  \node[rot] at (2.1,6.75) {2. Popup (só se houver débito)};
+  \draw[laranja,fill=white,rounded corners=4pt,line width=0.8pt] (0.35,1.5) rectangle (3.85,4.8);
+  \node[font=\scriptsize\bfseries,text=labeltext] at (2.1,4.4) {Débito pendente};
+  \node[font=\large\bfseries,text=amber] at (2.1,3.8) {R\$\,2,00};
+  \node[font=\tiny,text=subtle,text width=3cm,align=center] at (2.1,3.2) {atraso de 03/09. Pague para renovar Cálculo I.};
+  \fill[btn] (0.6,2.15) rectangle (3.6,2.75);
+  \node[font=\tiny\bfseries,text=white] at (2.1,2.45) {Pagar com Pix e renovar};
+  \node[font=\tiny,text=subtle] at (2.1,1.8) {Agora não};
+  \end{scope}
+  % ---------- Tela 3: ticket de confiança ----------
+  \begin{scope}[xshift=12cm]
+  \draw[tela] (0,0) rectangle (4.2,6.4);
+  \node[rot] at (2.1,6.75) {3. Ticket de confiança};
+  \fill[verde] (2.1,5.35) circle (0.35);
+  \node[text=white,font=\normalsize] at (2.1,5.35) {$\checkmark$};
+  \node[font=\footnotesize\bfseries,text=verde] at (2.1,4.6) {Renovado até 04/11};
+  \node[font=\tiny,text=subtle] at (2.1,4.2) {Cálculo I $\cdot$ ticket nº 4821};
+  \draw[verde,dashed,rounded corners=3pt,line width=0.8pt] (0.5,1.3) rectangle (3.7,3.9);
+  \node[font=\tiny,text=labeltext] at (2.1,3.6) {Mostre na devolução};
+  \begin{scope}[shift={(1.5,1.95)},x=0.17cm,y=0.17cm]
+    \foreach \a/\b in {0/4,4/4,0/0}{
+      \fill[labeltext] (\a,\b) rectangle +(3,3);
+      \fill[white] (\a+0.5,\b+0.5) rectangle +(2,2);
+      \fill[labeltext] (\a+1,\b+1) rectangle +(1,1);}
+    \foreach \a/\b in {3/0,4/1,6/0,5/2,6/2,3/2,4/3,6/3,0/3,2/3,3/4,3/6,4/0,5/1}{
+      \fill[labeltext] (\a,\b) rectangle +(1,1);}
+  \end{scope}
+  \node[font=\tiny,text=subtle] at (2.1,0.85) {disponível sem internet};
+  \end{scope}
+  % setas entre as telas
+  \draw[seta] (4.35,3.2) -- node[above,font=\tiny,text=subtle]{toque em Renovar} (5.85,3.2);
+  \draw[seta] (10.35,3.2) -- node[above,font=\tiny,text=subtle]{Pix confirmado} (11.85,3.2);
+  \draw[seta,dashed] (2.1,-0.05) -- (2.1,-0.45) -| node[pos=0.25,below,font=\tiny,text=subtle]{sem débito, o toque leva direto ao ticket} (14.1,-0.05);
+\end{tikzpicture}
 \end{caixa}
 
 {\small
-\textbf{Total de passos:} 6 \quad
-\textbf{Decisões:} 3 \quad
-\textbf{Ramos de erro:} 2 (ambos com retorno) \quad
+\textbf{Total de passos:} 4 (2 sem débito) \quad
+\textbf{Decisões:} 2 \quad
+\textbf{Ramos de erro:} 1 (com retorno) \quad
 \textbf{O erro explica o que fazer?} $\boxtimes$ sim \ $\square$ não\par}
-{\scriptsize\color{subtle}Passos = retângulos (P1--P6); decisões = losangos (D1--D3). ``Sim'' vale para o fluxo proposto. No app de hoje a resposta é ``não'': o erro é só o botão cinza, sem texto, e a falha de rede não aparece.\par}
+{\scriptsize\color{subtle}Antes: 6 passos e 3 decisões que o aluno precisava acompanhar. Agora: abrir o app e tocar em \textit{Renovar}; o popup só aparece quando há débito.\par}
 
 \newpage
 % =====================================================================
@@ -413,33 +444,28 @@ flowchart TD
 \hline
 \cab{secbg}{Achado} & \cab{secbg}{Insight} & \cab{laranjabg}{Necessidade} & \cab{verdebg}{Requisito (verificável)} & \cab{verdebg}{Tipo} & \cab{verdebg}{P} \\ \hline
 \leavevmode\color{subtle}\scriptsize Ex.: botão cinza sem motivo & \leavevmode\color{subtle}\scriptsize Falta explicação & \leavevmode\color{subtle}\scriptsize Saber o motivo & \leavevmode\color{subtle}\scriptsize Explicar o bloqueio em até 1 toque & \leavevmode\color{subtle}\scriptsize usabilidade & \leavevmode\color{subtle}\scriptsize M \\ \hline
-\textbf{R1.} Botão \textit{Renovar} cinza e multa só na aba ``Débitos''.\newline{\scriptsize\color{subtle}Origem: E1, E2, E4; dores 2.2 e 3.1}
-& Caio acha que o app está com defeito; a causa do bloqueio está longe de onde ele olha.
-& Saber, no próprio livro, por que não pode renovar e como resolver.
-& Com a renovação bloqueada, o card mostra o \textbf{motivo e o valor da multa em texto} (não só pela cor) e um botão ``Pagar e renovar'' de \textbf{no mínimo 48\,dp}, na metade de baixo do card, que leva ao pagamento em \textbf{1 toque}.\newline\textit{Teste:} 5 de 5 participantes dizem o motivo do bloqueio em \textbf{até 10\,s}.
+\textbf{R1.} Para renovar, Caio passa por várias telas e acha o botão cinza; nada avisa o prazo.\newline{\scriptsize\color{subtle}Origem: E1, E4, A3; dor 2.2}
+& Cada tela a mais gasta bateria, sinal e paciência no ônibus.
+& Renovar assim que abre o app, vendo o prazo de cada livro.
+& A home mostra um \textbf{carrossel com um card por empréstimo} (capa, título, data e selo: ``Em dia'', ``Vence amanhã'' ou ``Débito pendente'') e um botão verde \textit{Renovar} de \textbf{no mínimo 48\,dp} na metade de baixo do card. Renovar exige \textbf{1 toque} a partir da home. Um aviso 48\,h antes do vencimento abre o app direto no card.\newline\textit{Teste:} 5 de 5 participantes renovam em \textbf{até 10\,s}, sem ajuda.
 & Usabilidade & \bfseries M \\ \hline
-\textbf{R2.} Ao tocar em \textit{Renovar}, nada confirma a nova data.\newline{\scriptsize\color{subtle}Origem: A1, A4; dor 4.2}
-& Sem confirmação, Caio não confia e pode devolver atrasado achando que renovou.
+\textbf{R2.} A multa só aparece na aba ``Débitos'' e o app não diz como pagar.\newline{\scriptsize\color{subtle}Origem: E2, E3, A4; dores 3.1 e 3.2}
+& Caio não entende o bloqueio e a tarefa empaca.
+& Resolver o débito sem sair da renovação.
+& Com débito, o toque em \textit{Renovar} abre um \textbf{popup com o valor e o motivo em texto} e o botão ``Pagar com Pix e renovar''. Confirmado o Pix, a \textbf{renovação é feita automaticamente}, sem novo toque (\textbf{no máximo 2 toques} no total).\newline\textit{Teste:} funil popup $\rightarrow$ Pix $\rightarrow$ ticket; $\geq$ 70\% concluem em $\leq$ 2\,min.
+& Usabilidade & \bfseries M \\ \hline
+\textbf{R3.} Ao tocar em \textit{Renovar}, nada confirma a nova data.\newline{\scriptsize\color{subtle}Origem: A1; dor 4.2}
+& Sem prova, Caio não confia e pode devolver atrasado.
 & Ter certeza de que renovou e até quando.
-& Em \textbf{até 2\,s} após a resposta do servidor, a tela mostra ``Renovado até dd/mm'' e um comprovante, que \textbf{continua visível em ``Meus empréstimos'' sem internet}.\newline\textit{Teste:} cronometrar 20 renovações em rede 3G simulada; todas devem exibir a data em $\leq$ 2\,s.
-& Usabilidade & \bfseries M \\ \hline
-\textbf{R3.} Com 3G instável, o pedido some sem aviso.\newline{\scriptsize\color{subtle}Origem: A2; dor 4.1}
-& Caio repete toques e gasta bateria sem saber em que pé está o pedido.
-& Renovar mesmo com sinal fraco e saber o estado do pedido.
-& O pedido de renovação tem \textbf{no máximo 5\,KB}, \textbf{timeout de 10\,s} e até \textbf{3 novas tentativas automáticas}; o estado fica sempre visível (Enviando / Pendente / Confirmado); toques repetidos \textbf{não geram pedido duplicado}.\newline\textit{Teste:} perfil ``Slow 3G'' com quedas de sinal.
+& Em \textbf{até 2\,s} após a confirmação, o card vira um \textbf{ticket de confiança} com a nova data e um QR code, \textbf{visível sem internet}. Na devolução, a leitura do QR registra a entrega na hora e atualiza o ticket.\newline\textit{Teste:} 20 renovações em 3G simulado; todas mostram o ticket em $\leq$ 2\,s.
+& Funcional & \bfseries M \\ \hline
+\textbf{R4.} Com 3G instável, o pedido some sem aviso.\newline{\scriptsize\color{subtle}Origem: A2; dor 4.1}
+& Caio repete toques e gasta bateria sem saber se deu certo.
+& Não precisar acompanhar o pedido.
+& O pedido (\textbf{no máximo 5\,KB}) entra numa fila e é \textbf{reenviado sozinho até 3 vezes}; o aluno vê só ``Renovando\ldots'' no card até o ticket aparecer. Toques repetidos \textbf{não geram pedido duplicado}.\newline\textit{Teste:} perfil ``Slow 3G'' com quedas de sinal.
 & Não funcional (contexto) & \bfseries S \\ \hline
-\textbf{R4.} Não há aviso antes do vencimento.\newline{\scriptsize\color{subtle}Origem: A3}
-& Caio só lembra na véspera, quando qualquer imprevisto vira atraso.
-& Ser lembrado com tempo de agir.
-& Enviar notificação \textbf{48\,h antes} do vencimento, com botão ``Renovar'' que conclui a renovação em \textbf{no máximo 2 toques}; \textbf{$\geq$ 95\%} das notificações entregues no horário previsto.\newline\textit{Teste:} relatório de entrega do serviço de notificações.
-& Funcional & \bfseries S \\ \hline
 \end{tabularx}\par}
-
-\vspace{6pt}
-\begin{caixa}[gold]{Critério de prioridade e item adiado}
-\textbf{M (Must):} sem isso Caio não consegue renovar hoje (R1, R2). \textbf{S (Should):} importante para a meta de $-30\%$ de atrasos, mas a tarefa de hoje ainda funciona sem ele (R3, R4).\par\vspace{2pt}
-\textbf{W (Won't, por agora):} renovação automática sem pedir confirmação ao aluno. As regras para livros reservados ainda não estão definidas, e renovar sem avisar enfraquece o golfo de avaliação.
-\end{caixa}
+\vspace{4pt}
 {\scriptsize\color{subtle}Tipos: funcional, não funcional, usabilidade, acessibilidade, contexto. Um bom requisito é necessário, claro, verificável, atômico e rastreável.\par}
 
 \newpage
@@ -454,29 +480,28 @@ flowchart TD
   \begin{caixa}{História #1}
   \textbf{Como} #2, \textbf{quero} #3, \textbf{para que} #4.
   \end{caixa}}
-\historia{1 \normalfont(R1)}{calouro com livro vencendo e renovação bloqueada}{ver no próprio empréstimo o motivo do bloqueio e pagar a multa ali mesmo}{eu renove hoje, sem ir à biblioteca}
-\historia{2 \normalfont(R2, R3)}{aluno usando o celular no ônibus com sinal fraco}{ver se meu pedido de renovação está enviando, pendente ou confirmado, com a nova data}{eu não repita o pedido nem devolva o livro atrasado achando que renovei}
-\historia{3 \normalfont(R4)}{aluno com várias provas na semana}{receber um aviso 2 dias antes do vencimento}{eu tenha tempo de renovar ou devolver sem pagar multa}
-\historia{4 \normalfont(R4)}{aluno com pouca bateria}{renovar direto pela notificação de aviso}{eu resolva em 2 toques, sem abrir o app}
+\historia{1 \normalfont(R1)}{calouro com livro vencendo}{renovar direto na tela inicial, com um toque no card do livro}{eu resolva no ônibus em poucos segundos, sem ir à biblioteca}
+\historia{2 \normalfont(R2)}{aluno com débito pendente}{pagar o débito num popup e ter a renovação feita automaticamente}{eu não precise procurar outra aba nem tocar em \textit{Renovar} de novo}
+\historia{3 \normalfont(R3)}{aluno que vai devolver o livro}{um ticket de confiança com a nova data e um QR code}{eu tenha certeza da renovação e devolva sem fila no balcão}
+\historia{4 \normalfont(R4)}{aluno com sinal fraco}{que o app termine a renovação sozinho quando a rede voltar}{eu não precise repetir o pedido nem gastar bateria}
 
-\begin{caixa}[laranja]{Critério de aceite da história 1 \normalfont(tratamento da multa)}
-\textbf{Cenário: renovação bloqueada por multa} {\scriptsize\color{subtle}(texto para a folha oficial)}\par
-\gk{Dado que} Caio tem ``Cálculo I'' vencendo amanhã e uma multa pendente de R\$\,2,00\par
-\gk{quando} ele abre o livro em ``Meus empréstimos''\par
-\gk{então} o card mostra ``Renovação bloqueada: multa de R\$\,2,00'' em texto, sem depender só da cor,\par
-\gk{e} o botão ``Pagar e renovar'' abre o pagamento via Pix em 1 toque.\par\vspace{3pt}
-\textbf{Cenário: pagamento confirmado libera a renovação}\par
-\gk{Dado que} Caio pagou a multa via Pix \gk{quando} o banco confirmar o pagamento \gk{então}, em até 10\,s, o botão \textit{Renovar} fica ativo e o app avisa ``Multa paga. Você já pode renovar.''
+\begin{caixa}[laranja]{Critério de aceite da história 1 \normalfont(renovação em 1 toque)}
+\textbf{Cenário: renovação sem pendências}\par
+\gk{Dado que} Caio tem ``Cálculo I'' vencendo amanhã e nenhum débito\par
+\gk{quando} ele toca no botão verde \textit{Renovar} no card da home\par
+\gk{então} em até 2\,s o card vira o ticket ``Renovado até 04/11'', com QR code, disponível sem internet.\par\vspace{3pt}
+\textbf{Cenário: o sinal cai durante a renovação}\par
+\gk{Dado que} Caio tocou em \textit{Renovar} com o 3G instável \gk{quando} o servidor não responde \gk{então} o card mostra só ``Renovando\ldots'', o app reenvia sozinho quando o sinal voltar e o ticket aparece, sem pedido duplicado.
 \end{caixa}
 
-\begin{caixa}[laranja]{Critério de aceite da história 2 \normalfont(tratamento da falha de rede)}
-\textbf{Cenário: o sinal cai durante a renovação} {\scriptsize\color{subtle}(texto para a folha oficial)}\par
-\gk{Dado que} Caio tocou em \textit{Renovar} com o 3G instável\par
-\gk{quando} o servidor não responde em 10\,s\par
-\gk{então} o app mostra ``Sem conexão. Pedido salvo; tentando de novo (1/3)'' e o estado ``Pendente'',\par
-\gk{e} reenvia sozinho até 3 vezes, sem criar um pedido duplicado se Caio tocar de novo.\par\vspace{3pt}
-\textbf{Cenário: o sinal volta}\par
-\gk{Dado que} o pedido está ``Pendente'' \gk{quando} a conexão volta e o servidor confirma \gk{então}, em até 2\,s, aparece ``Renovado até 04/11'' e o comprovante fica salvo para ver sem internet.
+\begin{caixa}[laranja]{Critério de aceite da história 2 \normalfont(débito em popup)}
+\textbf{Cenário: renovação com débito pendente}\par
+\gk{Dado que} Caio tem uma multa de R\$\,2,00\par
+\gk{quando} ele toca em \textit{Renovar} no card da home\par
+\gk{então} abre um popup com o valor, o motivo e o botão ``Pagar com Pix e renovar'',\par
+\gk{e} quando o Pix é confirmado o livro é renovado e o ticket aparece, sem novo toque.\par\vspace{3pt}
+\textbf{Cenário: o Pix não é confirmado}\par
+\gk{Dado que} Caio pagou pelo popup \gk{quando} o banco não confirma em 60\,s \gk{então} o popup mostra ``Pagamento não confirmado. Toque para tentar de novo.'' e o livro continua no card com o prazo atual.
 \end{caixa}
 
 {\footnotesize\renewcommand{\arraystretch}{1.2}%
@@ -484,10 +509,10 @@ flowchart TD
 \begin{tabularx}{\linewidth}{|l|c|c|c|c|c|c|X|}
 \hline
 \rowcolor{secbg}\bfseries INVEST & \bfseries Independente & \bfseries Negociável & \bfseries Valiosa & \bfseries Estimável & \bfseries Pequena & \bfseries Testável & \bfseries Observação \\ \hline
-H1 & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & parcial & $\checkmark$ & Se não couber numa iteração, dividir em ``ver o motivo'' e ``pagar no card''. \\ \hline
-H2 & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & -- \\ \hline
+H1 & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & -- \\ \hline
+H2 & parcial & $\checkmark$ & $\checkmark$ & $\checkmark$ & parcial & $\checkmark$ & Depende da H1 (o card com \textit{Renovar}) e da integração com o Pix. \\ \hline
 H3 & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & -- \\ \hline
-H4 & parcial & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & Depende da H3 (a notificação precisa existir antes). \\ \hline
+H4 & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & -- \\ \hline
 \end{tabularx}\par}
 
 \newpage
@@ -501,11 +526,11 @@ H4 & parcial & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\che
 
 \begin{caixa}{Features agrupadas (nome do grupo e features)}
 \renewcommand{\arraystretch}{1.2}%
-\begin{tabularx}{\linewidth}{@{}>{\bfseries\leavevmode\color{navytext}}p{2.6cm}X@{}}
-Prevenir & \textbf{F1} Aviso 2 dias antes (D-2) com botão ``Renovar'' \textbullet\ \textbf{F5} Renovação automática opcional \textbullet\ \textbf{F6} Mandar o vencimento para a agenda do celular \\
-Desbloquear & \textbf{F2} Motivo do bloqueio + pagamento da multa via Pix no card \textbullet\ \textbf{F7} Perguntas frequentes ``Por que não posso renovar?'' \\
-Dar certeza & \textbf{F3} Confirmação com nova data + comprovante offline \textbullet\ \textbf{F4} Modo rede fraca (fila e reenvio automático) \\
-Atalhos & \textbf{F8} Widget com os prazos na tela inicial \textbullet\ \textbf{F9} Chatbot da biblioteca \\
+\begin{tabularx}{\linewidth}{@{}>{\bfseries\raggedright\leavevmode\color{navytext}}p{3.2cm}X@{}}
+Renovar em 1 toque & \textbf{F1} Carrossel de empréstimos na home, com selo de prazo e botão verde \textit{Renovar} \textbullet\ \textbf{F5} Renovação automática opcional \\
+Resolver débito & \textbf{F2} Popup de débito com Pix e renovação automática \textbullet\ \textbf{F7} Perguntas frequentes \\
+Dar certeza & \textbf{F3} Ticket de confiança (nova data + QR, offline, usado na devolução) \textbullet\ \textbf{F4} Processamento em segundo plano (fila e reenvio) \\
+Lembrar & \textbf{F6} Aviso 2 dias antes, abrindo direto no card \textbullet\ \textbf{F8} Widget dos prazos \textbullet\ \textbf{F9} Chatbot da biblioteca \\
 \end{tabularx}
 \end{caixa}
 
@@ -515,57 +540,51 @@ Atalhos & \textbf{F8} Widget com os prazos na tela inicial \textbullet\ \textbf{
 \hline
 \rowcolor{secbg}\bfseries Feature & \bfseries A (0--10) & \bfseries I (1--3) & \bfseries C (0--1) & \bfseries E (1--13) & \bfseries Conta: (A$\times$I$\times$C)/E & \bfseries RICE \\ \hline
 \leavevmode\color{subtle}Ex.: aviso antes do vencimento & \color{subtle}9 & \color{subtle}2 & \color{subtle}0,9 & \color{subtle}2 & \color{subtle}(9$\times$2$\times$0,9)/2 & \color{subtle}8,1 \\ \hline
-\textbf{F1} Aviso D-2 com botão ``Renovar'' & 9 & 3 & 0,8 & 3 & (9$\times$3$\times$0,8)/3 = 21,6/3 & \bfseries 7,2 \\ \hline
-\textbf{F3} Confirmação + comprovante offline & 8 & 2 & 0,8 & 2 & (8$\times$2$\times$0,8)/2 = 12,8/2 & \bfseries 6,4 \\ \hline
-\textbf{F2} Motivo do bloqueio + Pix no card & 4 & 3 & 0,9 & 5 & (4$\times$3$\times$0,9)/5 = 10,8/5 & \bfseries 2,16 \\ \hline
-\textbf{F4} Modo rede fraca (fila e reenvio) & 5 & 2 & 0,6 & 5 & (5$\times$2$\times$0,6)/5 = 6,0/5 & \bfseries 1,2 \\ \hline
+\textbf{F1} Carrossel na home com \textit{Renovar} & 9 & 3 & 0,8 & 3 & (9$\times$3$\times$0,8)/3 = 21,6/3 & \bfseries 7,2 \\ \hline
+\textbf{F3} Ticket de confiança & 8 & 2 & 0,8 & 2 & (8$\times$2$\times$0,8)/2 = 12,8/2 & \bfseries 6,4 \\ \hline
+\textbf{F2} Popup de débito com Pix & 4 & 3 & 0,9 & 5 & (4$\times$3$\times$0,9)/5 = 10,8/5 & \bfseries 2,16 \\ \hline
+\textbf{F4} Processamento em segundo plano & 5 & 2 & 0,6 & 5 & (5$\times$2$\times$0,6)/5 = 6,0/5 & \bfseries 1,2 \\ \hline
 \end{tabularx}\par}
-{\scriptsize\color{subtle}RICE = (Alcance $\times$ Impacto $\times$ Confiança) / Esforço. Esforço na sequência de Fibonacci (1, 2, 3, 5, 8, 13). \textbf{Por quê:} F1 atinge quase todo aluno com empréstimo (A\,=\,9) e ataca a causa principal do atraso, o esquecimento (I\,=\,3). F2 atinge só quem tem multa (A\,=\,4) e exige integrar o Pix (E\,=\,5). F4 tem confiança menor (C\,=\,0,6) porque ainda não sabemos quantos atrasos vêm de falha de rede.\par}
+{\scriptsize\color{subtle}RICE = (Alcance $\times$ Impacto $\times$ Confiança) / Esforço. Esforço na sequência de Fibonacci (1, 2, 3, 5, 8, 13). \textbf{Por quê:} F1 atinge quase todo aluno com empréstimo (A\,=\,9) e reduz a renovação a 1 toque (I\,=\,3). F2 atinge só quem tem débito (A\,=\,4) e exige integrar o Pix (E\,=\,5). F4 tem confiança menor (C\,=\,0,6) porque ainda não sabemos quantos atrasos vêm de falha de rede.\par}
 
-\vspace{6pt}
+\vspace{8pt}
 \noindent
 \begin{minipage}[t]{0.5\linewidth}
 \vspace{0pt}
 \begin{tikzpicture}[x=1cm,y=1cm,
-  postit/.style={draw=gold,fill=cream,font=\scriptsize,inner sep=2pt,rounded corners=1pt}]
-  \fill[verdebg] (0,3) rectangle (4,6);
-  \fill[laranjabg] (4,3) rectangle (8,6);
-  \fill[secbg] (0,0) rectangle (4,3);
-  \fill[cinzabg] (4,0) rectangle (8,3);
-  \draw[gridline] (0,0) rectangle (8,6); \draw[gridline] (4,0)--(4,6); \draw[gridline] (0,3)--(8,3);
-  \node[font=\footnotesize\bfseries] at (2,5.7) {Fazer já};
-  \node[font=\footnotesize\bfseries] at (6,5.7) {Projetos};
-  \node[font=\footnotesize\bfseries] at (2,0.3) {Se sobrar};
-  \node[font=\footnotesize\bfseries] at (6,0.3) {Evitar};
-  % Fazer já
-  \node[postit,anchor=west] at (0.2,4.85) {F1 Aviso D-2 \votos{5}};
-  \node[postit,anchor=west] at (0.2,3.95) {F3 Confirmação \votos{4}};
-  % Projetos
-  \node[postit,anchor=west] at (4.2,4.95) {F2 Bloqueio + Pix \votos{4}};
-  \node[postit,anchor=west] at (4.2,4.2) {F4 Rede fraca \votos{2}};
-  \node[postit,anchor=west] at (4.2,3.45) {F5 Renov. automática};
-  % Se sobrar
-  \node[postit,anchor=west] at (0.2,2.2) {F6 Agenda};
-  \node[postit,anchor=west] at (0.2,1.4) {F7 Perguntas frequentes};
-  % Evitar
-  \node[postit,anchor=west] at (4.2,2.2) {F8 Widget};
-  \node[postit,anchor=west] at (4.2,1.4) {F9 Chatbot};
-  \node[rotate=90,font=\scriptsize,text=subtle] at (-0.3,3) {valor ao usuário $\rightarrow$};
+  item/.style={anchor=west,font=\footnotesize,text=labeltext},
+  quad/.style={anchor=north west,font=\footnotesize\bfseries,text=navytext}]
+  \fill[verdebg] (0,2.5) rectangle (4,5);
+  \fill[laranjabg] (4,2.5) rectangle (8,5);
+  \fill[secbg] (0,0) rectangle (4,2.5);
+  \fill[cinzabg] (4,0) rectangle (8,2.5);
+  \draw[gridline] (0,0) rectangle (8,5); \draw[gridline] (4,0)--(4,5); \draw[gridline] (0,2.5)--(8,2.5);
+  \node[quad] at (0.1,4.95) {Fazer já};
+  \node[quad] at (4.1,4.95) {Projetos};
+  \node[quad] at (0.1,2.45) {Se sobrar};
+  \node[quad] at (4.1,2.45) {Evitar};
+  \node[item] at (0.2,3.85) {\textbf{F1} Carrossel \hfill (6 votos)};
+  \node[item] at (0.2,3.25) {\textbf{F3} Ticket \hfill (4 votos)};
+  \node[item] at (4.2,3.85) {\textbf{F2} Popup Pix (4 votos)};
+  \node[item] at (4.2,3.25) {\textbf{F4} Segundo plano (1 voto)};
+  \node[item] at (0.2,1.35) {F6 Aviso D-2 \textbullet\ F7 FAQ};
+  \node[item] at (4.2,1.35) {F5 \textbullet\ F8 \textbullet\ F9};
+  \node[rotate=90,font=\scriptsize,text=subtle] at (-0.3,2.5) {valor ao usuário $\rightarrow$};
   \node[font=\scriptsize,text=subtle] at (4,-0.3) {esforço $\rightarrow$};
 \end{tikzpicture}
 \end{minipage}%
 \hfill
 \begin{minipage}[t]{0.46\linewidth}
 \vspace{0pt}\small
-\textbf{Como usamos:} os post-its foram colados na matriz por consenso; depois cada pessoa votou com 3 pontos (5 pessoas = 15 votos: \votos{1} = 1 voto).\par\vspace{5pt}
+\textbf{Como usamos:} post-its colados na matriz por consenso; cada pessoa votou com 3 pontos (15 votos).\par\vspace{5pt}
 \textbf{Escopo da próxima entrega (features escolhidas):}
 \begin{enumerate}[leftmargin=1.4em,itemsep=2pt]
-  \item \textbf{F1} Aviso D-2 com ``Renovar'': maior RICE (7,2) e 5 votos.
-  \item \textbf{F3} Confirmação + comprovante: RICE 6,4, 4 votos e pouco esforço.
-  \item \textbf{F2} Motivo do bloqueio + Pix: RICE menor (2,16), mas entra porque cumpre o requisito R1 (Must). Sem ela, Caio continua travado.
+  \item \textbf{F1} Carrossel com \textit{Renovar}: maior RICE (7,2) e mais votos.
+  \item \textbf{F3} Ticket de confiança: RICE 6,4 e pouco esforço.
+  \item \textbf{F2} Popup de débito com Pix: RICE menor (2,16), mas entra por cumprir R2 (Must). Sem ela, Caio continua travado.
 \end{enumerate}
 \vspace{3pt}
-{\footnotesize\color{subtle}F4 fica para a entrega seguinte; só o estado do pedido (R3) entra agora, junto com F3. F8 e F9 ficam em ``Evitar'': custam muito e não atacam a causa do atraso.\par}
+{\footnotesize\color{subtle}F4 roda no back-end junto com F1; a versão completa fica para a entrega seguinte.\par}
 \end{minipage}
 
 \newpage
@@ -583,132 +602,44 @@ Atalhos & \textbf{F8} Widget com os prazos na tela inicial \textbullet\ \textbf{
 
 \begin{tcbraster}[raster columns=4,raster equal height=rows,raster column skip=4pt,raster row skip=5pt]
 \begin{canvas}{navy}{1. Problema}{Qual dor resolver?}
-Alunos não conseguem renovar pelo app quando há bloqueio (botão cinza, multa escondida em outra aba) e não sabem se a renovação deu certo, sobretudo com rede fraca. Sem aviso, o prazo passa despercebido.\par\vspace{2pt}
-\textbf{Resultado:} atraso, multa e ida ao balcão.
+Renovar pelo app exige várias telas, o bloqueio por débito não é explicado e nada confirma a nova data.
 \end{canvas}
 \begin{canvas}{navy}{2. Resultados}{O que o negócio ganha?}
-\begin{itemize}[leftmargin=0.9em]
-  \item \textbf{$-30\%$} de devoluções em atraso no semestre.
-  \item $\geq$ 80\% das renovações feitas no app.
-  \item Menos atendimentos no balcão só para renovar ou conferir.
-  \item Multas pagas sem fila.
-\end{itemize}
+$-30\%$ de devoluções em atraso e menos fila no balcão.
 \end{canvas}
 \begin{canvas}{verde}{3. Usuários}{Para quem?}
-\textbf{Principal:} calouros e alunos que usam o celular em trânsito, com bateria e sinal limitados (persona: Caio, 19 anos, Eng. de Computação).\par\vspace{2pt}
-\textbf{Secundário:} equipe do balcão da biblioteca, que hoje atende essas dúvidas.
+Alunos que usam o celular em trânsito, com pouca bateria e sinal fraco (Caio).
 \end{canvas}
 \begin{canvas}{verde}{4. Benefícios}{O que a pessoa ganha?}
-\begin{itemize}[leftmargin=0.9em]
-  \item Renovar em menos de 1 minuto, de onde estiver.
-  \item Entender e resolver um bloqueio na hora.
-  \item Certeza da nova data, mesmo sem internet.
-  \item Estudar para a prova sem medo de multa.
-\end{itemize}
+Renovar em 1 toque na home, com certeza da nova data.
 \end{canvas}
 \begin{canvas}{laranja}{5. Ideias}{Que soluções?}
-\begin{itemize}[leftmargin=0.9em]
-  \item \textbf{F1} Aviso D-2 com botão ``Renovar''.
-  \item \textbf{F3} Confirmação com nova data e comprovante offline.
-  \item \textbf{F2} Motivo do bloqueio + Pix no card.
-  \item \textbf{F4} Modo rede fraca (fila e reenvio), na próxima entrega.
-\end{itemize}
+F1 carrossel com \textit{Renovar} \textbullet\ F2 popup de débito com Pix \textbullet\ F3 ticket de confiança.
 \end{canvas}
 \begin{canvas}{laranja}{6. Hipóteses}{Se fizermos X, então Y}
-\textbf{(a) Se} enviarmos o aviso D-2 com ``Renovar'', \textbf{então} os atrasos cairão $\geq$ 20\%, \textbf{medido por} um teste A/B (com $\times$ sem aviso) por 8 semanas.\par\vspace{2pt}
-\textbf{(b) Se} o card mostrar o motivo e o Pix, \textbf{então} $\geq$ 70\% dos bloqueados vão quitar e renovar no app em $\leq$ 2 min, \textbf{medido pelo} funil bloqueio $\rightarrow$ pagamento $\rightarrow$ renovação.\par\vspace{2pt}
-\textbf{(c) Se} a tela confirmar a nova data, \textbf{então} as idas ao balcão para ``conferir'' cairão 50\%, \textbf{medido pelo} registro de atendimentos (4 semanas antes $\times$ depois).
+Se renovar for 1 toque na home, então os atrasos cairão $\geq$ 20\%.
 \end{canvas}
 \begin{canvas}{navy}{7. Aprender}{O que descobrir antes?}
-\begin{itemize}[leftmargin=0.9em]
-  \item Quantos atrasos vêm de esquecimento, de bloqueio por multa e de falha de rede?
-  \item Qual antecedência funciona melhor: 1, 2 ou 3 dias?
-  \item As regras da universidade permitem pagar multa por Pix no app?
-  \item Os alunos deixam as notificações do app ativas?
-\end{itemize}
+Quais as causas dos atrasos? A universidade aceita Pix no app?
 \end{canvas}
 \begin{canvas}{navy}{8. Experimentos}{Como testar rápido?}
-\begin{enumerate}[leftmargin=1.1em]
-  \item \textbf{Usabilidade:} protótipo navegável com 5 calouros, celular em ``Slow 3G''; medir tempo e erros para renovar com multa.
-  \item \textbf{Porta falsa:} botão ``Pagar e renovar'' para 10\% dos usuários, contando toques antes de construir o Pix.
-  \item \textbf{A/B do aviso D-2} por 8 semanas.
-  \item Separar os atrasos do último semestre por causa.
-\end{enumerate}
+Protótipo com 5 calouros em 3G lento e teste A/B por 8 semanas.
 \end{canvas}
 \end{tcbraster}
 
-\vspace{2pt}
-{\scriptsize\color{subtle}As três hipóteses somam para a meta: (a) ataca o esquecimento, que é a maior fatia; (b) e (c) cobrem os atrasos por bloqueio e por falsa renovação. Se (a) não chegar a 20\%, a meta de $-30\%$ não fecha e voltamos ao Canvas.\par}
-
-\newpage
-% ---------------------------------------------------------------------
-%  FOLHA 8 (continuação) - PITCH
-% ---------------------------------------------------------------------
-\folha{Folha 8 -- UX Canvas e pitch (continuação)}{2 min}
-
 \begin{caixa}{Roteiro do pitch (2 minutos)}
-{\footnotesize\color{subtle}\textbf{1.} Quem é a persona e qual o problema? \textbf{2.} O que descobrimos (golfos)? \textbf{3.} Quais requisitos principais? \textbf{4.} Quais features priorizamos e por quê? \textbf{5.} Como vamos testar?\par}
-\vspace{4pt}
-\renewcommand{\arraystretch}{1.5}%
-\begin{tabularx}{\linewidth}{@{}>{\bfseries\leavevmode\color{navy}\footnotesize}p{1.9cm}X@{}}
-0:00--0:22\newline{\color{subtle}\scriptsize 1. Persona} &
-Este é o Caio: dezenove anos, calouro de Engenharia de Computação. Terça de manhã, em pé no ônibus, com cinco por cento de bateria e 3G instável, ele precisa renovar o livro de Cálculo, que vence amanhã. A prova é sexta. Ele abre o app da biblioteca\ldots\ e não consegue. \\
-0:22--0:47\newline{\color{subtle}\scriptsize 2. Golfos} &
-Descobrimos dois golfos. No de execução, o botão Renovar aparece cinza, sem explicação, e a causa, uma multa de dois reais, está escondida em outra aba. No de avaliação, quando a renovação funciona, nada confirma a nova data; e, com a rede caindo, o Caio não sabe se o pedido saiu do celular. \\
-0:47--1:11\newline{\color{subtle}\scriptsize 3. Requisitos} &
-Isso virou quatro requisitos verificáveis. Dois são obrigatórios: mostrar no próprio livro o motivo do bloqueio, com pagamento a um toque; e confirmar a nova data em até dois segundos, salva para ver sem internet. Dois são importantes: pedido leve, com reenvio automático e estado visível, e aviso quarenta e oito horas antes do vencimento. \\
-1:11--1:38\newline{\color{subtle}\scriptsize 4. Features} &
-A meta da biblioteca é reduzir em trinta por cento os atrasos. Pelo RICE, ficaram na frente o aviso dois dias antes com botão Renovar, nota sete vírgula dois, e a confirmação com comprovante, seis vírgula quatro: muito valor e pouco esforço. O desbloqueio com Pix teve nota menor, porque custa mais, mas entra na entrega: sem ele, o Caio continua travado. \\
-1:38--2:00\newline{\color{subtle}\scriptsize 5. Teste} &
-Vamos testar rápido: protótipo com cinco calouros e o celular em 3G lento; uma porta falsa para medir quem toca em Pagar e renovar; e um teste A/B do aviso por oito semanas. Se os atrasos não caírem pelo menos vinte por cento, voltamos ao Canvas. Obrigado! \\
+\renewcommand{\arraystretch}{1.35}%
+\begin{tabularx}{\linewidth}{@{}>{\bfseries\raggedright\leavevmode\color{navy}\footnotesize}p{3.2cm}X@{}}
+1. Persona e problema & Caio, no ônibus com 5\% de bateria, não consegue renovar o livro de Cálculo, que vence amanhã. \\
+2. Golfos & Botão cinza sem motivo e débito escondido em outra aba (execução); nada confirma a nova data (avaliação). \\
+3. Requisitos & Renovar em 1 toque na home (R1), débito em popup com Pix (R2) e ticket de confiança (R3). \\
+4. Features & F1 carrossel (RICE 7,2) e F3 ticket (6,4) primeiro; F2 popup com Pix entra por ser Must. \\
+5. Teste & Protótipo com 5 calouros em 3G lento e A/B por 8 semanas; meta de $\geq$ 20\% menos atrasos. \\
 \end{tabularx}
-\vspace{2pt}
-{\scriptsize\color{subtle}Cerca de 270 palavras, num ritmo de 135 a 140 palavras por minuto, ou seja, 2 minutos. Números escritos por extenso para facilitar a fala. Na folha oficial, transcrevam um resumo de cada bloco nas linhas do roteiro.\par}
 \end{caixa}
 
 \begin{caixa}{Comentário recebido da outra equipe}
-\vspace{1.6cm}
-\end{caixa}
-
-\begin{caixa}[gold]{Resumo para transcrever nas 3 linhas do roteiro oficial}
-\textbf{1--2.} Caio, 19 anos, no ônibus com 5\% de bateria e 3G instável, não consegue renovar o livro que vence amanhã: botão cinza sem motivo e multa escondida (execução); nenhuma confirmação e rede invisível (avaliação).
-\textbf{3--4.} Must: motivo do bloqueio com pagamento a 1 toque (R1) e nova data em $\leq$ 2\,s, offline (R2). Prioridade pelo RICE: F1 aviso D-2 (7,2), F3 confirmação (6,4) e F2 Pix (2,16, entra por ser Must).
-\textbf{5.} Protótipo com 5 calouros em ``Slow 3G'', porta falsa do ``Pagar e renovar'' e A/B do aviso por 8 semanas (meta: $\geq$ 20\% menos atrasos).
-\end{caixa}
-
-\newpage
-% =====================================================================
-%  APÊNDICE - RASTREABILIDADE
-% =====================================================================
-\folha{Apêndice -- Rastreabilidade entre as folhas}{}
-
-{\small\color{bodytext}Cada linha segue um problema da Folha 1 até a hipótese da Folha 8, para mostrar que cada etapa usa o resultado da anterior.\par}
-\vspace{6pt}
-
-{\footnotesize\renewcommand{\arraystretch}{1.45}%
-\noindent
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}X|c|>{\centering\arraybackslash}p{1.5cm}|c|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.4cm}|}
-\hline
-\rowcolor{secbg}\bfseries Golfo (Folha 1) & \bfseries Dor (F3) & \bfseries Fluxo (F4) & \bfseries Req. (F5) & \bfseries História (F6) & \bfseries Feature (F7) & \bfseries Hipótese (F8) \\ \hline
-E1 botão cinza sem motivo \newline E4 alvo pequeno & 2.2 & D1 Não $\rightarrow$ erro E1 & R1 (M) & H1 & F2 Bloqueio + Pix & (b) funil \\ \hline
-E2 multa em outra aba & 3.1 & erro E1 & R1 (M) & H1 & F2 Bloqueio + Pix & (b) funil \\ \hline
-E3 sem caminho para pagar \newline A4 multa paga $\neq$ renovado & 3.2 & P5, D2 & R1 (M) & H1 (cenário 2) & F2 Bloqueio + Pix & (b) funil \\ \hline
-A1 nada confirma a nova data & 4.2 & P6 & R2 (M) & H2 (cenário 2) & F3 Confirmação & (c) balcão \\ \hline
-A2 rede invisível (3G) & 4.1 & D3 Não $\rightarrow$ erro E2 & R3 (S) & H2 (cenário 1) & F4 Rede fraca (+ estado em F3) & Experimento 1 (``Slow 3G'') \\ \hline
-A3 prazo sem aviso & antes de 1 & antes do Início & R4 (S) & H3, H4 & F1 Aviso D-2 & (a) A/B \\ \hline
-\end{tabularx}\par}
-
-\vspace{10pt}
-\begin{caixa}[verde]{Skills do projeto usadas em cada etapa}
-\renewcommand{\arraystretch}{1.3}%
-\begin{tabularx}{\linewidth}{@{}>{\ttfamily\footnotesize}p{4.2cm}X@{}}
-analise-cognitiva & Folhas 1, 2 e 3: modelo mental, golfos, cenário em 4 movimentos, HTA com plano 0 e pontos de dor. \\
-heuristicas-nielsen & Folhas 1 e 3: heurística violada em cada golfo e em cada dor. \\
-leis-ux-ergonomia & Folhas 1 e 5: Lei de Fitts e zona do polegar (E4; botão de 48\,dp na metade de baixo do card em R1). \\
-diagramacao-fluxo & Folha 4: convenções do fluxo, código Mermaid e desenho equivalente em TikZ. \\
-requisitos-bdd & Folhas 5 e 6: cadeia achado $\rightarrow$ requisito, MoSCoW, histórias de Cohn, INVEST e Gherkin. \\
-priorizacao-rice & Folhas 7 e 8: RICE, matriz valor $\times$ esforço, votação por pontos, Lean UX Canvas e pitch. \\
-\end{tabularx}
+\vspace{1.4cm}
 \end{caixa}
 
 \end{document}
