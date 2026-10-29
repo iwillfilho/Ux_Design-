@@ -1,0 +1,1038 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Renovar em 1 Toque</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: pitch em faixas verticais na ordem do roteiro de 2 min; a demo do celular é a faixa central, com controles | celular | painel do back-end */
+:root {
+  --paper: #F4F6FB;
+  --surface: #FFFFFF;
+  --ink: #131A31;
+  --muted: #586180;
+  --line: #D8DCEA;
+  --navy: #1E3A8A;
+  --navy-soft: #E4EAF8;
+  --go: #0F7B5F;
+  --go-soft: #DDF0EA;
+  --warn: #B45309;
+  --warn-soft: #FCEBDD;
+  --pain: #C62828;
+  --pain-soft: #FBE6E6;
+  --bar: rgba(244, 246, 251, .92);
+
+  /* o celular é uma maquete de app: paleta própria e fixa, igual nos dois temas */
+  --app-bg: #F3F5FA;
+  --app-card: #FFFFFF;
+  --app-ink: #18213D;
+  --app-muted: #66708C;
+  --app-line: #E0E4EE;
+  --app-navy: #1E3A8A;
+  --app-go: #0F7B5F;
+  --app-go-soft: #DDF0EA;
+  --app-warn: #B45309;
+  --app-warn-soft: #FCEBDD;
+  --app-pain: #C62828;
+  --app-grey: #A3AAB9;
+  --bezel: #0E1428;
+
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0C1121; --surface: #141B31; --ink: #E6E9F4; --muted: #9AA3BF; --line: #28314D;
+    --navy: #9DB4F5; --navy-soft: #1B2648; --go: #3CC39C; --go-soft: #10362C;
+    --warn: #F0A35A; --warn-soft: #3A2614; --pain: #F27D7D; --pain-soft: #3A1A1D;
+    --bar: rgba(12, 17, 33, .92); --bezel: #000000;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0C1121; --surface: #141B31; --ink: #E6E9F4; --muted: #9AA3BF; --line: #28314D;
+  --navy: #9DB4F5; --navy-soft: #1B2648; --go: #3CC39C; --go-soft: #10362C;
+  --warn: #F0A35A; --warn-soft: #3A2614; --pain: #F27D7D; --pain-soft: #3A1A1D;
+  --bar: rgba(12, 17, 33, .92); --bezel: #000000;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+table { font-size: inherit; color: inherit; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 17px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bar); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(28px, 4vw, 40px); font-stretch: 80%; font-weight: 800; letter-spacing: -.01em; line-height: 1.05; }
+h3 { font-size: 19px; font-weight: 700; line-height: 1.25; }
+p { margin: 0; }
+a { color: var(--navy); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; border-radius: 4px; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--mono); font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- barra do pitch ---------- */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bar); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; gap: 14px; padding-block: 10px; }
+.brand { font-family: var(--display); font-weight: 800; font-stretch: 85%; font-size: 17px; white-space: nowrap; }
+.brand span { color: var(--muted); font-weight: 500; }
+.chips { display: flex; gap: 6px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { display: inline-flex; gap: 6px; align-items: baseline; white-space: nowrap; text-decoration: none; color: var(--ink); font-size: 14px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+.chip .mono { font-size: 12px; color: var(--muted); }
+.chip.on { background: var(--navy); border-color: var(--navy); color: var(--surface); }
+.chip.on .mono { color: var(--surface); opacity: .8; }
+.timer { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--navy); background: var(--surface); color: var(--navy); border-radius: 999px; padding: 5px 12px; cursor: pointer; font-family: var(--mono); font-size: 14px; font-weight: 600; white-space: nowrap; }
+.timer.run { background: var(--navy); color: var(--surface); }
+.timer.late { background: var(--pain); border-color: var(--pain); color: var(--surface); }
+
+/* ---------- hero ---------- */
+.hero { padding-block: 56px 40px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 48px; align-items: end; }
+.hero h1 { font-size: clamp(44px, 8vw, 92px); font-stretch: 70%; font-weight: 800; line-height: .92; letter-spacing: -.02em; margin-top: 14px; }
+.hero h1 em { font-style: normal; color: var(--go); }
+.lead { font-size: 19px; max-width: 58ch; margin-top: 20px; color: var(--ink); }
+.cta { display: inline-flex; margin-top: 26px; gap: 10px; align-items: center; background: var(--go); color: var(--surface); text-decoration: none; font-weight: 700; padding: 12px 20px; border-radius: 10px; }
+.compare { border-top: 2px solid var(--ink); }
+.compare div { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.compare dt { color: var(--muted); font-size: 15px; }
+.compare dd { margin: 0; font-family: var(--display); font-stretch: 80%; font-weight: 800; font-size: 26px; text-align: right; }
+.compare .was { color: var(--pain); text-decoration: line-through; text-decoration-thickness: 2px; }
+.compare .now { color: var(--go); }
+
+/* ---------- seções ---------- */
+section.band { padding-block: 56px; border-top: 1px solid var(--line); }
+.sec-head { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; margin-bottom: 30px; }
+.sec-time { font-family: var(--mono); font-size: 14px; color: var(--muted); padding-top: 8px; border-top: 3px solid var(--line); }
+.sec-time b { display: block; font-size: 28px; color: var(--ink); font-weight: 600; }
+.band.on .sec-time { border-top-color: var(--navy); }
+.sec-head p { color: var(--muted); max-width: 62ch; margin-top: 10px; }
+
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; min-width: 0; }
+
+/* persona */
+.persona dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 16px 0 0; font-size: 16px; }
+.persona dt { color: var(--muted); }
+.persona dd { margin: 0; }
+.quote { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); font-family: var(--display); font-stretch: 85%; font-size: 22px; font-weight: 600; }
+.quote small { display: block; font-family: var(--body); font-size: 14px; font-weight: 400; color: var(--muted); }
+.issues { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 12px; }
+.issues li { display: grid; grid-template-columns: 30px 1fr; gap: 10px; }
+.issues li span:first-child { font-family: var(--mono); font-weight: 600; color: var(--pain); }
+.goals { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.goal { background: var(--navy-soft); border-radius: 10px; padding: 12px 14px; font-size: 15px; }
+.goal b { display: block; font-family: var(--display); font-stretch: 85%; font-size: 22px; }
+
+/* golfos */
+.gulf h3 { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; padding-bottom: 10px; border-bottom: 2px solid var(--navy); }
+.gulf.eval h3 { border-color: var(--warn); }
+.gulf h3 small { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--muted); }
+.gulf ol { list-style: none; margin: 0; padding: 0; }
+.gulf li { display: grid; grid-template-columns: 38px 1fr; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.gulf li:last-child { border-bottom: 0; }
+.code { font-family: var(--mono); font-weight: 600; font-size: 14px; color: var(--navy); }
+.gulf.eval .code { color: var(--warn); }
+.gulf li small { display: block; color: var(--muted); font-size: 13.5px; }
+
+/* ---------- demo ---------- */
+.demo { background: var(--surface); border-block: 1px solid var(--line); }
+.demo-grid { display: grid; grid-template-columns: minmax(0, 1fr) 316px minmax(0, 1.1fr); gap: 28px; align-items: start; }
+.scenes { display: grid; gap: 8px; }
+.scene { text-align: left; border: 1px solid var(--line); background: var(--paper); border-radius: 10px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; }
+.scene b { font-size: 15.5px; }
+.scene span { font-size: 13.5px; color: var(--muted); line-height: 1.35; }
+.scene.on { border-color: var(--navy); background: var(--navy-soft); box-shadow: inset 4px 0 0 var(--navy); }
+.scene.old.on { border-color: var(--pain); background: var(--pain-soft); box-shadow: inset 4px 0 0 var(--pain); }
+.side-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.ghost { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 7px 12px; cursor: pointer; font-size: 14.5px; }
+.ghost:hover { border-color: var(--navy); }
+.hint { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: var(--go-soft); font-size: 15px; }
+.hint b { display: block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--go); }
+.hint.old { background: var(--pain-soft); }
+.hint.old b { color: var(--pain); }
+.note { font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.metric { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--paper); }
+.metric span { display: block; font-size: 12.5px; color: var(--muted); }
+.metric b { font-family: var(--display); font-stretch: 80%; font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.metric.ok b { color: var(--go); }
+.metric.bad b { color: var(--pain); }
+.log-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.legend { display: flex; gap: 10px; font-size: 12.5px; color: var(--muted); flex-wrap: wrap; }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 4px; }
+.log { list-style: none; margin: 0; padding: 0; max-height: 440px; overflow-y: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.log li { display: grid; grid-template-columns: 54px 1fr auto; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 14px; line-height: 1.35; align-items: start; }
+.log li:last-child { border-bottom: 0; }
+.log .t { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 2px; }
+.log .k { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+.log .tela .k { color: var(--navy); }
+.log .back .k { color: var(--go); }
+.log .dor .k { color: var(--pain); }
+.log .back { background: color-mix(in srgb, var(--go-soft) 45%, transparent); }
+.log .dor { background: color-mix(in srgb, var(--pain-soft) 60%, transparent); }
+.log .tag { font-family: var(--mono); font-size: 11.5px; border: 1px solid var(--line); border-radius: 4px; padding: 0 5px; color: var(--muted); background: var(--surface); }
+.log li.new { animation: flash .6s ease-out; }
+@keyframes flash { from { background: var(--navy-soft); } }
+
+/* ---------- celular ---------- */
+.phone { width: 316px; max-width: 100%; height: 640px; border-radius: 44px; padding: 10px; background: var(--bezel); box-shadow: 0 0 0 1px var(--line), 0 24px 50px -20px rgba(10, 20, 50, .45); position: relative; justify-self: center; }
+.phone::before { content: ""; position: absolute; top: 18px; left: 50%; width: 62px; height: 20px; margin-left: -31px; background: var(--bezel); border-radius: 12px; z-index: 5; }
+.screen { position: relative; height: 100%; border-radius: 34px; overflow: hidden; background: var(--app-bg); color: var(--app-ink); font-family: var(--body); font-size: 14px; line-height: 1.35; display: flex; flex-direction: column; }
+.sb { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px 6px 24px; font-size: 12.5px; font-weight: 700; flex: none; }
+.sb .r { display: flex; gap: 6px; align-items: center; }
+.sig { display: inline-flex; gap: 1.5px; align-items: flex-end; height: 10px; }
+.sig i { width: 3px; background: var(--app-ink); border-radius: 1px; }
+.sig i.off { background: var(--app-grey); opacity: .5; }
+.bat { display: inline-flex; align-items: center; gap: 3px; color: var(--app-pain); }
+.bat span { width: 20px; height: 10px; border: 1.5px solid var(--app-ink); border-radius: 3px; position: relative; }
+.bat span::after { content: ""; position: absolute; left: 1px; top: 1px; bottom: 1px; width: 2px; background: var(--app-pain); border-radius: 1px; }
+.body { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
+.body::-webkit-scrollbar { display: none; }
+
+.a-head { padding: 8px 18px 4px; }
+.a-head h4 { margin: 0; font-family: var(--display); font-stretch: 85%; font-size: 24px; font-weight: 800; }
+.a-head p { color: var(--app-muted); font-size: 13px; }
+.debtchip { display: inline-flex; gap: 6px; align-items: center; margin: 8px 18px 0; padding: 4px 10px; border-radius: 999px; background: var(--app-warn-soft); color: var(--app-warn); font-size: 12px; font-weight: 700; }
+.sub { display: flex; justify-content: space-between; padding: 14px 18px 8px; font-size: 12.5px; color: var(--app-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+.carousel { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 2px 18px 6px; scrollbar-width: none; }
+.carousel::-webkit-scrollbar { display: none; }
+.card { flex: 0 0 228px; scroll-snap-align: center; background: var(--app-card); border: 1px solid var(--app-line); border-radius: 18px; padding: 14px; display: grid; gap: 10px; box-shadow: 0 6px 16px -10px rgba(20, 30, 60, .35); }
+.card.pulse { animation: pulse 1.2s ease-out 2; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(15, 123, 95, .55); } 100% { box-shadow: 0 0 0 14px rgba(15, 123, 95, 0); } }
+.card .top { display: grid; grid-template-columns: 62px 1fr; gap: 12px; }
+.cover { height: 86px; border-radius: 6px; display: flex; align-items: flex-end; padding: 6px; color: #fff; font-family: var(--display); font-stretch: 75%; font-weight: 800; font-size: 12px; line-height: 1.05; box-shadow: inset -4px 0 0 rgba(0, 0, 0, .18); }
+.card h5 { margin: 0; font-size: 16px; font-weight: 700; }
+.card .au { font-size: 12px; color: var(--app-muted); }
+.card .due { font-size: 12px; color: var(--app-muted); margin-top: 6px; }
+.badges { display: flex; flex-wrap: wrap; gap: 5px; }
+.badge { font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+.b-warn { background: var(--app-warn-soft); color: var(--app-warn); }
+.b-ok { background: var(--app-go-soft); color: var(--app-go); }
+.b-plain { background: #EEF1F7; color: var(--app-muted); }
+.b-pain { background: #FBE6E6; color: var(--app-pain); }
+.btn { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; min-height: 48px; border: 0; border-radius: 12px; font-weight: 700; font-size: 15.5px; cursor: pointer; }
+.btn-go { background: var(--app-go); color: #fff; }
+.btn-go:active { transform: scale(.98); }
+.btn-line { background: transparent; color: var(--app-go); border: 1.5px solid var(--app-go); }
+.btn-busy { background: var(--app-go-soft); color: var(--app-go); }
+.btn-off { background: #E7EAF0; color: var(--app-grey); cursor: default; }
+.btn-text { background: transparent; color: var(--app-muted); min-height: 40px; font-weight: 600; }
+.spin { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: rot .8s linear infinite; }
+@keyframes rot { to { transform: rotate(360deg); } }
+.dots { display: flex; justify-content: center; gap: 6px; padding: 6px 0 10px; }
+.dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--app-line); }
+.dots i.on { background: var(--app-navy); width: 16px; border-radius: 3px; }
+.mini { margin: 4px 18px 14px; background: var(--app-card); border: 1px solid var(--app-line); border-radius: 14px; padding: 12px 14px; font-size: 13px; color: var(--app-muted); }
+.mini b { color: var(--app-ink); display: block; font-size: 13.5px; }
+
+/* popup (bottom sheet, na zona do polegar) */
+.scrim { position: absolute; inset: 0; background: rgba(14, 20, 40, .45); display: flex; align-items: flex-end; z-index: 3; animation: fade .2s ease-out; }
+@keyframes fade { from { opacity: 0; } }
+.sheet { width: 100%; background: var(--app-card); border-radius: 22px 22px 0 0; padding: 10px 18px 22px; display: grid; gap: 10px; animation: up .25s ease-out; }
+@keyframes up { from { transform: translateY(40px); } }
+.grab { width: 36px; height: 4px; border-radius: 2px; background: var(--app-line); justify-self: center; }
+.sheet .lbl { font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--app-warn); }
+.sheet .amt { font-family: var(--display); font-stretch: 80%; font-size: 40px; font-weight: 800; line-height: 1; }
+.sheet p { color: var(--app-muted); font-size: 13.5px; }
+.sheet .err { background: #FBE6E6; color: var(--app-pain); border-radius: 10px; padding: 10px 12px; font-weight: 600; font-size: 13.5px; }
+.sheet .okmsg { background: var(--app-go-soft); color: var(--app-go); border-radius: 10px; padding: 10px 12px; font-weight: 700; font-size: 13.5px; }
+
+/* ticket de confiança: comprovante no estilo da ficha de devolução da biblioteca */
+.tk-wrap { padding: 8px 16px 16px; display: grid; gap: 12px; }
+.tk-ok { display: grid; justify-items: center; gap: 4px; text-align: center; padding-top: 4px; }
+.tk-ok .chk { width: 44px; height: 44px; border-radius: 50%; background: var(--app-go); color: #fff; display: grid; place-items: center; font-size: 24px; font-weight: 800; }
+.tk-ok h4 { margin: 0; font-family: var(--display); font-stretch: 80%; font-size: 26px; font-weight: 800; color: var(--app-go); }
+.tk-ok p { color: var(--app-muted); font-size: 12.5px; }
+.slip { position: relative; background: #FFFDF6; border: 1px solid #E8DFC4; border-radius: 6px; padding: 12px 14px; color: #3A3220;
+  -webkit-mask: radial-gradient(circle 6px at 0 62%, transparent 98%, #000) , radial-gradient(circle 6px at 100% 62%, transparent 98%, #000);
+  -webkit-mask-composite: source-in; mask-composite: intersect; }
+.slip .hd { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; display: flex; justify-content: space-between; border-bottom: 1px dashed #CFC3A0; padding-bottom: 6px; }
+.slip table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 11px; margin-top: 6px; }
+.slip td { padding: 3px 0; border-bottom: 1px solid #EFE7CF; }
+.slip td:last-child { text-align: right; }
+.slip .row2 { display: grid; grid-template-columns: 1fr 86px; gap: 10px; align-items: center; margin-top: 10px; }
+.stamp { display: inline-block; transform: rotate(-4deg); border: 2px solid var(--app-navy); color: var(--app-navy); border-radius: 4px; padding: 4px 8px; font-family: var(--mono); font-weight: 600; font-size: 11px; line-height: 1.2; text-transform: uppercase; }
+.stamp b { display: block; font-size: 20px; letter-spacing: .02em; }
+.qr { width: 86px; height: 86px; background: #fff; padding: 4px; border-radius: 4px; }
+.qr svg { display: block; width: 100%; height: 100%; }
+.offline { justify-self: center; display: inline-flex; gap: 6px; align-items: center; font-size: 12px; font-weight: 700; color: var(--app-navy); background: #E4EAF8; padding: 4px 10px; border-radius: 999px; }
+.returned { position: absolute; top: 38%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg); border: 3px solid var(--app-pain); color: var(--app-pain); font-family: var(--mono); font-weight: 600; padding: 6px 12px; border-radius: 6px; text-align: center; background: rgba(255, 253, 246, .85); animation: stampin .35s ease-out; }
+.returned b { display: block; font-size: 22px; letter-spacing: .06em; }
+@keyframes stampin { from { transform: translate(-50%, -50%) rotate(-12deg) scale(1.6); opacity: 0; } }
+
+/* notificação */
+.notif { position: absolute; top: 44px; left: 8px; right: 8px; z-index: 4; background: rgba(255, 255, 255, .97); border-radius: 16px; padding: 10px 12px; display: grid; grid-template-columns: 34px 1fr; gap: 10px; box-shadow: 0 12px 30px -10px rgba(10, 20, 50, .5); cursor: pointer; text-align: left; border: 0; animation: drop .35s ease-out; }
+@keyframes drop { from { transform: translateY(-30px); opacity: 0; } }
+.notif .ic { width: 34px; height: 34px; border-radius: 9px; background: var(--app-navy); color: #fff; display: grid; place-items: center; font-family: var(--display); font-weight: 800; }
+.notif small { color: var(--app-muted); font-size: 11.5px; display: block; }
+.notif b { font-size: 13.5px; display: block; }
+.notif span { font-size: 13px; }
+
+/* app atual (antes) */
+.old-top { background: #5B6475; color: #fff; padding: 10px 16px; font-weight: 700; font-size: 15px; }
+.old-news { margin: 12px 14px; background: #fff; border: 1px solid #D5D9E0; border-radius: 4px; padding: 10px 12px; font-size: 13px; color: #4A5163; }
+.old-news b { display: block; color: #2A3040; }
+.old-row { margin: 10px 14px; background: #fff; border: 1px solid #D5D9E0; border-radius: 4px; padding: 10px 12px; display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; font-size: 13px; }
+.old-row b { display: block; font-size: 14px; }
+.old-row small { color: #6B7285; }
+.old-btn { border: 0; border-radius: 4px; padding: 6px 10px; font-size: 12px; font-weight: 700; background: #D3D6DC; color: #9BA1AE; cursor: pointer; }
+.old-btn.shake { animation: shake .3s; }
+@keyframes shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+.tabs { flex: none; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #D5D9E0; background: #fff; padding-bottom: 12px; }
+.tabs button { border: 0; background: none; padding: 9px 0 4px; font-size: 11.5px; color: #8A90A0; cursor: pointer; }
+.tabs button.on { color: #2A3040; font-weight: 700; box-shadow: inset 0 2px 0 #2A3040; }
+
+/* ---------- requisitos ---------- */
+.reqs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.req { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.req .rh { display: flex; justify-content: space-between; align-items: center; }
+.req .id { font-family: var(--mono); font-weight: 600; color: var(--navy); }
+.prio { font-family: var(--mono); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.prio.m { background: var(--navy); color: var(--surface); }
+.prio.s { border: 1px solid var(--navy); color: var(--navy); }
+.req .metric-line { font-family: var(--display); font-stretch: 80%; font-size: 24px; font-weight: 800; line-height: 1.1; }
+.req p { font-size: 15px; }
+.req .meta { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; }
+
+/* ---------- features ---------- */
+.feat-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.tbl-wrap { overflow-x: auto; }
+table.rice { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+.rice th { text-align: left; font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--muted); padding: 8px 6px; border-bottom: 2px solid var(--ink); }
+.rice td { padding: 10px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.rice td.n { font-family: var(--mono); text-align: center; }
+.rice .score { display: grid; grid-template-columns: 44px 1fr; gap: 8px; align-items: center; min-width: 130px; }
+.rice .score b { font-family: var(--mono); text-align: right; }
+.rice .score span { height: 10px; border-radius: 2px; background: var(--navy); }
+.rice tr.pick td:first-child { box-shadow: inset 3px 0 0 var(--go); }
+.matrix { display: grid; grid-template-columns: 22px 1fr 1fr; grid-template-rows: 1fr 1fr 22px; gap: 6px; }
+.quad { border-radius: 10px; padding: 12px; min-height: 120px; font-size: 14.5px; display: grid; gap: 4px; align-content: start; }
+.quad h3 { font-size: 15px; margin-bottom: 4px; }
+.q1 { background: var(--go-soft); } .q2 { background: var(--warn-soft); } .q3 { background: var(--navy-soft); } .q4 { background: color-mix(in srgb, var(--line) 55%, transparent); }
+.axis-y { grid-row: 1 / 3; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; font-size: 12.5px; color: var(--muted); }
+.axis-x { grid-column: 2 / 4; text-align: center; font-size: 12.5px; color: var(--muted); }
+.votes { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.scope { margin-top: 18px; display: grid; gap: 8px; }
+.scope li { font-size: 15.5px; }
+
+/* ---------- teste ---------- */
+.hyp { font-family: var(--display); font-stretch: 85%; font-size: clamp(22px, 3vw, 30px); font-weight: 700; line-height: 1.2; max-width: 34ch; }
+.hyp em { font-style: normal; color: var(--go); }
+.exps { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 12px; }
+.exps li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; }
+.exps li > span { font-family: var(--mono); font-weight: 600; color: var(--navy); }
+.canvas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.cv { border: 1px solid var(--line); border-top: 4px solid var(--navy); background: var(--surface); border-radius: 8px; padding: 10px 12px; font-size: 14px; min-width: 0; }
+.cv.g { border-top-color: var(--go); } .cv.o { border-top-color: var(--warn); }
+.cv b { display: block; font-family: var(--display); font-stretch: 85%; font-size: 15px; }
+.closing { margin-top: 30px; padding: 20px 22px; border-radius: 14px; background: var(--navy); color: var(--surface); font-family: var(--display); font-stretch: 85%; font-size: 22px; font-weight: 700; }
+
+footer { padding-block: 34px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14.5px; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+footer b { color: var(--ink); }
+
+@media (max-width: 1080px) {
+  .demo-grid { grid-template-columns: minmax(0, 1fr) 316px; }
+  .log-col { grid-column: 1 / -1; }
+  .reqs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .hero-grid, .grid2, .feat-grid, .demo-grid { grid-template-columns: minmax(0, 1fr); }
+  .sec-head { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .sec-time b { display: inline; font-size: 20px; margin-right: 8px; }
+  .reqs, .canvas { grid-template-columns: minmax(0, 1fr); }
+  .canvas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .brand span { display: none; }
+  .goals { grid-template-columns: 1fr; }
+  .phone { order: -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="brand">Prisma UX <span>· Pitch Aula 4</span></div>
+    <nav class="chips" aria-label="Roteiro do pitch">
+      <a class="chip" href="#persona" data-i="0"><span class="mono">0:00</span>Persona</a>
+      <a class="chip" href="#golfos" data-i="1"><span class="mono">0:22</span>Golfos</a>
+      <a class="chip" href="#solucao" data-i="2"><span class="mono">0:47</span>Solução e requisitos</a>
+      <a class="chip" href="#features" data-i="3"><span class="mono">1:11</span>Features</a>
+      <a class="chip" href="#teste" data-i="4"><span class="mono">1:38</span>Teste</a>
+    </nav>
+    <button class="timer" id="timer" type="button" aria-label="Cronômetro do pitch">▶ <span id="timer-v">2:00</span></button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Design Colaborativo · FEELT31623 · Exercício dirigido da Aula 4</div>
+      <h1>Renovar o livro<br>em <em>1 toque</em>.</h1>
+      <p class="lead">Caio está com 5% de bateria, o 3G está caindo e o livro de Cálculo vence amanhã. Nossa solução leva a renovação para a tela inicial do app: ele toca no card do livro e o app resolve o resto em segundo plano.</p>
+      <a class="cta" href="#solucao">Testar no celular ↓</a>
+    </div>
+    <dl class="compare">
+      <div><dt>Passos até renovar</dt><dd><span class="was">6</span> → <span class="now">2</span></dd></div>
+      <div><dt>Decisões que o aluno acompanha</dt><dd><span class="was">3</span> → <span class="now">0</span></dd></div>
+      <div><dt>Toques com débito pendente</dt><dd><span class="was">não conclui</span> → <span class="now">2</span></dd></div>
+      <div><dt>Meta da biblioteca</dt><dd>−30% atrasos</dd></div>
+    </dl>
+  </div>
+</header>
+
+<main>
+  <!-- 1. PERSONA -->
+  <section class="band" id="persona" data-i="0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-time"><b>0:00</b>1 · Persona</div>
+        <div>
+          <h2>Terça, 7h40, em pé no ônibus</h2>
+          <p>O caso é o aplicativo fictício da biblioteca da faculdade. A tarefa é a mais comum do app: renovar um empréstimo.</p>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="panel persona">
+          <h3>Caio, 19 anos</h3>
+          <p style="color:var(--muted)">Calouro de Engenharia de Computação</p>
+          <dl>
+            <dt>Aparelho</dt><dd>Android de entrada, uma mão livre</dd>
+            <dt>Bateria</dt><dd class="mono" style="color:var(--pain)">5%</dd>
+            <dt>Sinal</dt><dd>3G instável</dd>
+            <dt>Pressão</dt><dd>Cálculo I vence amanhã (28/10) e a prova é na sexta (30/10)</dd>
+          </dl>
+          <p class="quote">“Toco em Renovar e pronto.”<small>Modelo mental mais provável do Caio. O app de hoje nunca corrige essa ideia.</small></p>
+        </div>
+        <div class="panel">
+          <h3>O que acontece hoje</h3>
+          <ol class="issues">
+            <li><span>1</span><span>Em “Meus empréstimos”, o botão <i>Renovar</i> aparece cinza, sem explicação.</span></li>
+            <li><span>2</span><span>Há uma multa de R$ 2,00 pendente, mas ela só aparece na aba “Débitos”.</span></li>
+            <li><span>3</span><span>Ao tocar em <i>Renovar</i>, nada confirma a nova data.</span></li>
+            <li><span>4</span><span>Não há aviso antes do vencimento.</span></li>
+          </ol>
+          <div class="goals">
+            <div class="goal"><b>−30%</b>Objetivo do negócio: devoluções em atraso</div>
+            <div class="goal"><b>Sem balcão</b>Objetivo do Caio: renovar sem ir à biblioteca</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. GOLFOS -->
+  <section class="band" id="golfos" data-i="1">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-time"><b>0:22</b>2 · Golfos</div>
+        <div>
+          <h2>Onde o Caio se perde</h2>
+          <p>Golfo de execução: ele não sabe como fazer. Golfo de avaliação: ele não sabe se deu certo. Cada item cita a heurística de Nielsen violada.</p>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="panel gulf">
+          <h3>Execução <small>“como eu faço?”</small></h3>
+          <ol>
+            <li><span class="code">E1</span><span>Botão cinza sem motivo: bloqueado, carregando ou com defeito?<small>H1 status do sistema · H9 ajudar com o erro</small></span></li>
+            <li><span class="code">E2</span><span>A causa do bloqueio está na aba “Débitos”, longe de onde ele olha.<small>H6 reconhecer em vez de lembrar</small></span></li>
+            <li><span class="code">E3</span><span>Mesmo achando a multa, não há caminho para pagar.<small>H9 e H10 ajuda</small></span></li>
+            <li><span class="code">E4</span><span>Alvo pequeno, no alto do card, longe do polegar no ônibus.<small>Lei de Fitts · zona do polegar</small></span></li>
+          </ol>
+        </div>
+        <div class="panel gulf eval">
+          <h3>Avaliação <small>“deu certo?”</small></h3>
+          <ol>
+            <li><span class="code">A1</span><span>Depois do toque, a nova data não aparece.<small>H1 status do sistema</small></span></li>
+            <li><span class="code">A2</span><span>Com o 3G caindo, ele não sabe se o pedido saiu e toca várias vezes.<small>H1 e H9</small></span></li>
+            <li><span class="code">A3</span><span>Nada avisa o vencimento; ele só percebe na véspera.<small>H1 e H5 prevenção de erros</small></span></li>
+            <li><span class="code">A4</span><span>Pagar a multa não indica que a renovação foi liberada.<small>H1 status do sistema</small></span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SOLUÇÃO: DEMO -->
+  <section class="band demo" id="solucao" data-i="2">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-time"><b>0:47</b>3 · Solução</div>
+        <div>
+          <h2>Teste a renovação no celular do Caio</h2>
+          <p>Escolha um cenário e use o celular como o Caio usaria. O painel ao lado mostra o que aparece na tela e o que o app faz escondido do usuário.</p>
+        </div>
+      </div>
+
+      <div class="demo-grid">
+        <div>
+          <div class="eyebrow" style="margin-bottom:8px">Cenários</div>
+          <div class="scenes" id="scenes" role="radiogroup" aria-label="Cenário da demonstração"></div>
+          <div class="side-actions">
+            <button class="ghost" type="button" id="btn-notif">Simular aviso de vencimento</button>
+            <button class="ghost" type="button" id="btn-reset">Reiniciar cenário</button>
+          </div>
+          <div class="hint" id="hint"><b>Próximo toque</b><span></span></div>
+          <p class="note">Tempos de rede acelerados para caber na apresentação.</p>
+        </div>
+
+        <div class="phone" aria-label="Protótipo do app da biblioteca">
+          <div class="screen" id="screen"></div>
+        </div>
+
+        <div class="log-col">
+          <div class="metrics">
+            <div class="metric" id="m-taps"><span>Toques</span><b>0</b></div>
+            <div class="metric" id="m-time"><span>Tempo</span><b>0,0 s</b></div>
+            <div class="metric" id="m-res"><span>Resultado</span><b>—</b></div>
+          </div>
+          <div class="log-head">
+            <div class="eyebrow">O que acontece</div>
+            <div class="legend"><span><i style="background:var(--navy)"></i>Tela</span><span><i style="background:var(--go)"></i>Back-end</span><span><i style="background:var(--pain)"></i>Ponto de dor</span></div>
+          </div>
+          <ol class="log" id="log" aria-live="polite"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. REQUISITOS -->
+  <section class="band" id="requisitos" data-i="2">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-time"><b>0:47</b>3 · Requisitos</div>
+        <div>
+          <h2>Quatro requisitos verificáveis</h2>
+          <p>Cada requisito vem de um golfo ou ponto de dor e tem um número que dá para testar.</p>
+        </div>
+      </div>
+      <div class="reqs">
+        <article class="req">
+          <div class="rh"><span class="id">R1</span><span class="prio m">Must</span></div>
+          <div class="metric-line">1 toque a partir da home</div>
+          <p>Carrossel com um card por empréstimo: capa, data e selo de situação. Botão verde <i>Renovar</i> de 48 dp na metade de baixo do card.</p>
+          <div class="meta">Teste: 5 de 5 renovam em até 10 s · Usabilidade · Origem E1, E4, A3</div>
+        </article>
+        <article class="req">
+          <div class="rh"><span class="id">R2</span><span class="prio m">Must</span></div>
+          <div class="metric-line">Débito resolvido em 2 toques</div>
+          <p>Com débito, o toque abre um popup com valor e motivo. Confirmado o Pix, a renovação acontece sozinha.</p>
+          <div class="meta">Teste: ≥ 70% concluem em ≤ 2 min · Usabilidade · Origem E2, E3, A4</div>
+        </article>
+        <article class="req">
+          <div class="rh"><span class="id">R3</span><span class="prio m">Must</span></div>
+          <div class="metric-line">Ticket em até 2 s</div>
+          <p>O card vira um ticket de confiança com a nova data e um QR code, visível sem internet. Na devolução, o QR registra a entrega na hora.</p>
+          <div class="meta">Teste: 20 renovações em 3G simulado · Funcional · Origem A1</div>
+        </article>
+        <article class="req">
+          <div class="rh"><span class="id">R4</span><span class="prio s">Should</span></div>
+          <div class="metric-line">Até 3 reenvios automáticos</div>
+          <p>Pedido de até 5 KB numa fila. O aluno vê só “Renovando…”, e tocar de novo não duplica o pedido.</p>
+          <div class="meta">Teste: perfil “Slow 3G” · Não funcional · Origem A2</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURES -->
+  <section class="band" id="features" data-i="3">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-time"><b>1:11</b>4 · Features</div>
+        <div>
+          <h2>O que entra primeiro, e por quê</h2>
+          <p>RICE = (Alcance × Impacto × Confiança) / Esforço, com esforço em Fibonacci. Depois, cada pessoa votou com 3 pontos na matriz valor × esforço.</p>
+        </div>
+      </div>
+      <div class="feat-grid">
+        <div class="panel">
+          <div class="tbl-wrap">
+            <table class="rice">
+              <thead><tr><th>Feature</th><th>A</th><th>I</th><th>C</th><th>E</th><th>RICE</th></tr></thead>
+              <tbody>
+                <tr class="pick"><td><b>F1</b> Carrossel na home com <i>Renovar</i></td><td class="n">9</td><td class="n">3</td><td class="n">0,8</td><td class="n">3</td><td><div class="score"><b>7,2</b><span style="width:100%"></span></div></td></tr>
+                <tr class="pick"><td><b>F3</b> Ticket de confiança</td><td class="n">8</td><td class="n">2</td><td class="n">0,8</td><td class="n">2</td><td><div class="score"><b>6,4</b><span style="width:89%"></span></div></td></tr>
+                <tr class="pick"><td><b>F2</b> Popup de débito com Pix</td><td class="n">4</td><td class="n">3</td><td class="n">0,9</td><td class="n">5</td><td><div class="score"><b>2,16</b><span style="width:30%"></span></div></td></tr>
+                <tr><td><b>F4</b> Processamento em segundo plano</td><td class="n">5</td><td class="n">2</td><td class="n">0,6</td><td class="n">5</td><td><div class="score"><b>1,2</b><span style="width:17%"></span></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <ol class="scope">
+            <li><b>F1 carrossel:</b> maior RICE e mais votos.</li>
+            <li><b>F3 ticket:</b> RICE 6,4 com pouco esforço.</li>
+            <li><b>F2 popup com Pix:</b> RICE menor, mas entra por cumprir R2 (Must). Sem ela, o Caio continua travado.</li>
+          </ol>
+        </div>
+        <div class="matrix" aria-label="Matriz valor por esforço">
+          <div class="axis-y">valor ao usuário →</div>
+          <div class="quad q1"><h3>Fazer já</h3><div><b>F1</b> Carrossel <span class="votes">6 votos</span></div><div><b>F3</b> Ticket <span class="votes">4 votos</span></div></div>
+          <div class="quad q2"><h3>Projetos</h3><div><b>F2</b> Popup Pix <span class="votes">4 votos</span></div><div><b>F4</b> Segundo plano <span class="votes">1 voto</span></div></div>
+          <div class="quad q3"><h3>Se sobrar</h3><div>F6 Aviso D-2</div><div>F7 Perguntas frequentes</div></div>
+          <div class="quad q4"><h3>Evitar</h3><div>F5 Renovação automática</div><div>F8 Widget · F9 Chatbot</div></div>
+          <div class="axis-x">esforço →</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TESTE -->
+  <section class="band" id="teste" data-i="4">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-time"><b>1:38</b>5 · Teste</div>
+        <div>
+          <h2>Como vamos testar rápido</h2>
+        </div>
+      </div>
+      <div class="grid2">
+        <div>
+          <p class="hyp">Se renovar for <em>1 toque na home</em>, então os atrasos cairão pelo menos 20%.</p>
+          <ul class="exps">
+            <li><span>01</span><span><b>Usabilidade:</b> este protótipo com 5 calouros, celular em “Slow 3G”. Medimos tempo e erros até o ticket.</span></li>
+            <li><span>02</span><span><b>Porta falsa:</b> botão “Pagar com Pix e renovar” para 10% dos usuários, contando toques antes de construir o Pix.</span></li>
+            <li><span>03</span><span><b>Teste A/B</b> do carrossel por 8 semanas, comparando os atrasos.</span></li>
+          </ul>
+        </div>
+        <div class="canvas" aria-label="UX Canvas">
+          <div class="cv"><b>1. Problema</b>Várias telas, bloqueio sem motivo, nenhuma confirmação.</div>
+          <div class="cv"><b>2. Resultados</b>−30% de atrasos e menos fila no balcão.</div>
+          <div class="cv g"><b>3. Usuários</b>Alunos em trânsito, com pouca bateria e sinal fraco.</div>
+          <div class="cv g"><b>4. Benefícios</b>Renovar em 1 toque, com certeza da data.</div>
+          <div class="cv o"><b>5. Ideias</b>F1 carrossel · F2 popup Pix · F3 ticket.</div>
+          <div class="cv o"><b>6. Hipóteses</b>1 toque na home → ≥ 20% menos atrasos.</div>
+          <div class="cv"><b>7. Aprender</b>Causas dos atrasos? Pix no app é permitido?</div>
+          <div class="cv"><b>8. Experimentos</b>Protótipo em 3G lento e A/B por 8 semanas.</div>
+        </div>
+      </div>
+      <p class="closing">Se os atrasos não caírem pelo menos 20%, voltamos ao Canvas. Obrigado!</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><b>Prisma UX Design</b> · Wilson Ribeiro de Andrade Filho (líder) · José Mendes de Sousa · José Lucas Lira · Ana Flávia de Oliveira · Emanuel Simões Campos</div>
+    <div>UFU · Prof. Renato Carrijo · 2026/2</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- dados do caso ---------------- */
+  var BOOKS = [
+    { id: "calc", title: "Cálculo I", author: "James Stewart · vol. 1", due: "28/10", newDue: "04/11", lent: "21/10", soon: true, color: "#1E3A8A", ticket: "4821" },
+    { id: "alg", title: "Algoritmos", author: "Cormen et al.", due: "05/11", newDue: "12/11", lent: "29/10", soon: false, color: "#0F7B5F", ticket: "4822" },
+    { id: "fis", title: "Física I", author: "Halliday · vol. 1", due: "12/11", newDue: "19/11", lent: "05/11", soon: false, color: "#B45309", ticket: "4823" }
+  ];
+
+  var PRESETS = {
+    antes:   { label: "App de hoje", desc: "Botão cinza, multa em outra aba, sem confirmação.", mode: "antes", debt: true, old: true },
+    simples: { label: "Renovação simples", desc: "Sem débito: um toque e o ticket aparece.", mode: "sol" },
+    debito:  { label: "Com débito de R$ 2,00", desc: "O popup cobra via Pix e renova sozinho.", mode: "sol", debt: true },
+    sinal:   { label: "Sinal fraco (3G caindo)", desc: "O app guarda o pedido e reenvia sem o Caio perceber.", mode: "sol", weak: true },
+    pix:     { label: "Pix não confirma", desc: "Erro que explica o que fazer e volta para o popup.", mode: "sol", debt: true, pixFail: true }
+  };
+
+  var S = null;
+  var screenEl = document.getElementById("screen");
+  var logEl = document.getElementById("log");
+
+  function fresh(key) {
+    var p = PRESETS[key];
+    return {
+      preset: key, mode: p.mode, debt: !!p.debt, weak: !!p.weak, pixFail: !!p.pixFail, pixTries: 0,
+      screen: p.mode === "antes" ? "old-home" : "home",
+      popup: null, popupBook: null, ticketBook: null, notif: false,
+      taps: 0, tStart: null, tDone: null, result: "idle", grayTaps: 0, sawDebt: false,
+      books: BOOKS.map(function (b) { return Object.assign({}, b, { renewed: false, renewing: false, returned: false }); }),
+      log: [], timers: [], highlight: null, carouselX: 0
+    };
+  }
+
+  function reset(key) {
+    if (S) S.timers.forEach(clearTimeout);
+    S = fresh(key);
+    if (S.mode === "antes") {
+      log("tela", "App atual aberto na tela Início. Os empréstimos não aparecem aqui.", "");
+    } else {
+      log("tela", "Home aberta: carrossel com os 3 livros e o prazo de cada um.", "R1");
+      if (S.debt) log("back", "Débito de R$ 2,00 encontrado (atraso de 03/09). O aluno só verá isso se tentar renovar.", "R2");
+      if (S.weak) log("back", "Rede instável detectada: pedidos vão para a fila local.", "R4");
+    }
+    renderScenes();
+    render();
+  }
+
+  function book(id) { return S.books.filter(function (b) { return b.id === id; })[0]; }
+  function now() { return S.tStart ? (performance.now() - S.tStart) / 1000 : 0; }
+  function tap() { S.taps++; if (!S.tStart) S.tStart = performance.now(); }
+  function later(ms, fn) { var id = setTimeout(function () { fn(); render(); }, ms); S.timers.push(id); }
+  function log(kind, text, code) { S.log.push({ t: now(), kind: kind, text: text, code: code || "" }); }
+  function done() { if (!S.tDone) { S.tDone = now(); S.result = "ok"; } }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  /* ---------------- QR code ilustrativo ---------------- */
+  function qr(seed) {
+    var n = 21, cells = "", x = 0, y = 0, s = 0;
+    for (var i = 0; i < seed.length; i++) s = (s * 31 + seed.charCodeAt(i)) >>> 0;
+    function rnd() { s = (s * 1103515245 + 12345) >>> 0; return (s >>> 16) & 1; }
+    function finder(fx, fy) {
+      return '<rect x="' + fx + '" y="' + fy + '" width="7" height="7" fill="#18213D"/>' +
+        '<rect x="' + (fx + 1) + '" y="' + (fy + 1) + '" width="5" height="5" fill="#fff"/>' +
+        '<rect x="' + (fx + 2) + '" y="' + (fy + 2) + '" width="3" height="3" fill="#18213D"/>';
+    }
+    for (y = 0; y < n; y++) for (x = 0; x < n; x++) {
+      var inF = (x < 8 && y < 8) || (x > 12 && y < 8) || (x < 8 && y > 12);
+      if (!inF && rnd()) cells += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="#18213D"/>';
+    }
+    return '<svg viewBox="0 0 21 21" shape-rendering="crispEdges" aria-label="QR code do ticket">' + cells + finder(0, 0) + finder(14, 0) + finder(0, 14) + '</svg>';
+  }
+
+  /* ---------------- telas ---------------- */
+  function statusBar() {
+    var bars = S.weak ? '<i style="height:3px"></i><i class="off" style="height:5px"></i><i class="off" style="height:7px"></i><i class="off" style="height:10px"></i>'
+                      : '<i style="height:3px"></i><i style="height:5px"></i><i class="off" style="height:7px"></i><i class="off" style="height:10px"></i>';
+    return '<div class="sb"><span>7:40</span><span class="r"><span class="sig">' + bars + '</span><span>3G</span><span class="bat">5%<span></span></span></span></div>';
+  }
+
+  function cardHtml(b) {
+    var badges = "";
+    if (b.returned) badges += '<span class="badge b-plain">Devolvido em 28/10</span>';
+    else if (b.renewed) badges += '<span class="badge b-ok">Renovado até ' + b.newDue + '</span>';
+    else if (b.soon) badges += '<span class="badge b-warn">Vence amanhã · ' + b.due + '</span>';
+    else badges += '<span class="badge b-ok">Em dia</span>';
+    if (S.debt && !b.renewed && !b.returned && b.soon) badges += '<span class="badge b-pain">Débito pendente</span>';
+
+    var btn;
+    if (b.returned) btn = '<button class="btn btn-off" type="button" disabled>Devolvido</button>';
+    else if (b.renewing) btn = '<button class="btn btn-busy" type="button" data-act="renew" data-id="' + b.id + '"><span class="spin"></span>Renovando…</button>';
+    else if (b.renewed) btn = '<button class="btn btn-line" type="button" data-act="ticket" data-id="' + b.id + '">Ver ticket</button>';
+    else btn = '<button class="btn btn-go" type="button" data-act="renew" data-id="' + b.id + '">Renovar</button>';
+
+    return '<div class="card' + (S.highlight === b.id ? ' pulse' : '') + '" data-card="' + b.id + '">' +
+      '<div class="top"><div class="cover" style="background:' + b.color + '">' + esc(b.title) + '</div>' +
+      '<div><h5>' + esc(b.title) + '</h5><div class="au">' + esc(b.author) + '</div>' +
+      '<div class="due">' + (b.renewed ? 'Nova data: ' + b.newDue : 'Devolver até ' + b.due) + '</div></div></div>' +
+      '<div class="badges">' + badges + '</div>' + btn + '</div>';
+  }
+
+  function homeHtml() {
+    var h = '<div class="a-head"><p>Bom dia,</p><h4>Caio</h4></div>';
+    if (S.debt) h += '<div class="debtchip">● 1 débito · R$ 2,00</div>';
+    h += '<div class="sub"><span>Meus livros</span><span>' + S.books.length + '</span></div>';
+    h += '<div class="carousel" id="carousel">' + S.books.map(cardHtml).join("") + '</div>';
+    h += '<div class="dots" id="dots">' + S.books.map(function (_, i) { return '<i' + (i === 0 ? ' class="on"' : '') + '></i>'; }).join("") + '</div>';
+    h += '<div class="mini"><b>Próximo prazo</b>' + (book("calc").renewed ? "Algoritmos, 05/11" : "Cálculo I vence amanhã, 28/10") + '</div>';
+    return h;
+  }
+
+  function popupHtml() {
+    var b = book(S.popupBook), inner;
+    if (S.popup === "ask" || S.popup === "error") {
+      inner = '<div class="lbl">Débito pendente</div><div class="amt">R$ 2,00</div>' +
+        '<p>Atraso de 03/09 em Química Geral. Pague para renovar ' + esc(b.title) + '. A renovação é feita logo depois do pagamento.</p>' +
+        (S.popup === "error" ? '<div class="err">Pagamento não confirmado. Toque para tentar de novo.</div>' : '') +
+        '<button class="btn btn-go" type="button" data-act="pay">' + (S.popup === "error" ? "Tentar de novo" : "Pagar com Pix e renovar") + '</button>' +
+        '<button class="btn btn-text" type="button" data-act="close">Agora não</button>';
+    } else if (S.popup === "paying") {
+      inner = '<div class="lbl">Pix de R$ 2,00</div><div class="amt" style="font-size:24px">Confirmando pagamento…</div>' +
+        '<p>Pode fechar o app; avisamos quando terminar.</p><button class="btn btn-busy" type="button" disabled><span class="spin"></span>Aguardando o banco</button>';
+    } else {
+      inner = '<div class="okmsg">✓ Multa paga. Renovando ' + esc(b.title) + '…</div>';
+    }
+    return '<div class="scrim"><div class="sheet" role="dialog" aria-label="Débito pendente"><div class="grab"></div>' + inner + '</div></div>';
+  }
+
+  function ticketHtml() {
+    var b = book(S.ticketBook);
+    return '<div class="tk-wrap">' +
+      '<div class="tk-ok"><div class="chk">✓</div><h4>Renovado até ' + b.newDue + '</h4><p>' + esc(b.title) + ' · ticket nº ' + b.ticket + '</p></div>' +
+      '<div class="slip"><div class="hd"><span>Biblioteca UFU</span><span>Ticket de confiança</span></div>' +
+      '<table><tr><td>Emprestado</td><td>' + b.lent + '</td></tr><tr><td>Renovado</td><td>27/10 07:41</td></tr><tr><td>Aluno</td><td>Caio · Eng. Comp.</td></tr></table>' +
+      '<div class="row2"><div><span class="stamp">Devolver até<b>' + b.newDue + '</b></span></div><div class="qr">' + qr(b.ticket) + '</div></div>' +
+      (b.returned ? '<div class="returned">DEVOLVIDO<b>28/10</b>sem multa</div>' : '') + '</div>' +
+      '<span class="offline">● Disponível sem internet</span>' +
+      (b.returned ? '' : '<button class="btn btn-line" type="button" data-act="return">Mostrar QR na devolução</button>') +
+      '<button class="btn btn-text" type="button" data-act="home">Voltar para a home</button></div>';
+  }
+
+  function oldHtml() {
+    var body = "";
+    if (S.screen === "old-home") {
+      body = '<div class="old-news"><b>Horário de funcionamento</b>Segunda a sexta, 7h às 22h.</div>' +
+        '<div class="old-news"><b>Novas aquisições</b>Confira os títulos que chegaram em outubro.</div>' +
+        '<div class="old-news"><b>Regulamento</b>Leia as regras de empréstimo e renovação.</div>';
+    } else if (S.screen === "old-loans") {
+      body = S.books.map(function (b) {
+        return '<div class="old-row"><div><b>' + esc(b.title) + '</b><small>Devolução: ' + b.due + '</small></div>' +
+          '<button class="old-btn" type="button" data-act="old-renew" data-id="' + b.id + '">Renovar</button></div>';
+      }).join("");
+    } else if (S.screen === "old-debts") {
+      body = '<div class="old-row"><div><b>Multa por atraso</b><small>Química Geral · 03/09</small></div><b>R$ 2,00</b></div>' +
+        '<div class="old-news">Regularize seus débitos no balcão da biblioteca.</div>';
+    } else {
+      body = '<div class="old-news"><b>Caio</b>Matrícula 12611ECP000 · Engenharia de Computação</div>';
+    }
+    var titles = { "old-home": "Biblioteca", "old-loans": "Meus empréstimos", "old-debts": "Débitos", "old-profile": "Perfil" };
+    var tabs = [["old-home", "Início"], ["old-loans", "Empréstimos"], ["old-debts", "Débitos"], ["old-profile", "Perfil"]];
+    return '<div class="old-top">' + titles[S.screen] + '</div><div class="body">' + body + '</div>' +
+      '<div class="tabs">' + tabs.map(function (t) { return '<button type="button" data-act="tab" data-tab="' + t[0] + '"' + (S.screen === t[0] ? ' class="on"' : '') + '>' + t[1] + '</button>'; }).join("") + '</div>';
+  }
+
+  function notifHtml() {
+    return '<button class="notif" type="button" data-act="notif"><span class="ic">B</span><span><small>Biblioteca UFU · agora</small><b>Cálculo I vence amanhã (28/10)</b><span>Toque para renovar em 1 toque.</span></span></button>';
+  }
+
+  function render() {
+    var c = document.getElementById("carousel");
+    if (c) S.carouselX = c.scrollLeft;
+    var h = statusBar();
+    if (S.mode === "antes") h += oldHtml();
+    else {
+      h += '<div class="body">' + (S.screen === "ticket" ? ticketHtml() : homeHtml()) + '</div>';
+      if (S.popup) h += popupHtml();
+    }
+    if (S.notif) h += notifHtml();
+    screenEl.innerHTML = h;
+
+    c = document.getElementById("carousel");
+    if (c) {
+      if (S.highlight) {
+        var el = c.querySelector('[data-card="' + S.highlight + '"]');
+        c.scrollLeft = el ? el.offsetLeft - 18 : 0;
+        S.highlight = null;
+      } else c.scrollLeft = S.carouselX;
+      c.addEventListener("scroll", syncDots, { passive: true });
+      syncDots();
+    }
+    renderLog();
+    renderPanel();
+  }
+
+  function syncDots() {
+    var c = document.getElementById("carousel"), d = document.getElementById("dots");
+    if (!c || !d) return;
+    var i = Math.round(c.scrollLeft / 238);
+    Array.prototype.forEach.call(d.children, function (dot, k) { dot.className = k === i ? "on" : ""; });
+  }
+
+  var shown = 0;
+  function renderLog() {
+    if (S.log.length < shown) shown = 0;
+    logEl.innerHTML = S.log.map(function (e, i) {
+      var k = { tela: "Tela", back: "Back-end", dor: "Ponto de dor" }[e.kind];
+      return '<li class="' + e.kind + (i >= shown ? ' new' : '') + '"><span class="t">' + e.t.toFixed(1).replace(".", ",") + ' s</span>' +
+        '<span><span class="k">' + k + '</span>' + esc(e.text) + '</span>' + (e.code ? '<span class="tag">' + e.code + '</span>' : '<span></span>') + '</li>';
+    }).join("");
+    shown = S.log.length;
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function hintText() {
+    if (S.mode === "antes") {
+      if (S.sawDebt) return "Não há botão de pagamento. Para renovar, o Caio teria que ir ao balcão.";
+      if (S.screen === "old-loans") return S.grayTaps ? "Procure o motivo na aba Débitos." : "Toque em Renovar no Cálculo I.";
+      return "Procure onde renovar. Os livros estão na aba Empréstimos.";
+    }
+    if (S.popup === "ask") return "Toque em “Pagar com Pix e renovar”.";
+    if (S.popup === "error") return "Toque em “Tentar de novo”.";
+    if (S.popup) return "Aguarde. O app termina sozinho.";
+    var c = book("calc");
+    if (c.renewing) return S.weak ? "Toque de novo em Renovando…: o pedido não duplica." : "Aguarde o ticket.";
+    if (S.screen === "ticket") return c.returned ? "Pronto. Escolha outro cenário." : "Mostre o QR na devolução ou volte para a home.";
+    if (c.returned) return "Pronto. Escolha outro cenário.";
+    if (c.renewed) return "Toque em Ver ticket ou escolha outro cenário.";
+    return "Toque em Renovar no card do Cálculo I.";
+  }
+
+  function renderPanel() {
+    var hint = document.getElementById("hint");
+    hint.className = "hint" + (S.mode === "antes" ? " old" : "");
+    hint.querySelector("span").textContent = hintText();
+    document.querySelector("#m-taps b").textContent = S.taps;
+    var t = S.tDone != null ? S.tDone : now();
+    document.querySelector("#m-time b").textContent = t.toFixed(1).replace(".", ",") + " s";
+    var res = document.getElementById("m-res");
+    res.className = "metric" + (S.result === "ok" ? " ok" : S.result === "fail" ? " bad" : "");
+    res.querySelector("b").textContent = S.result === "ok" ? "Renovado" : S.result === "fail" ? "Travado" : S.tStart ? "Em curso" : "—";
+  }
+  setInterval(function () { if (S && S.tStart && S.tDone == null && S.result !== "fail") renderPanel(); }, 100);
+
+  /* ---------------- ações ---------------- */
+  function startRenew(b, auto) {
+    b.renewing = true;
+    S.screen = "home";
+    if (auto) log("back", "Renovação automática disparada pelo pagamento, sem novo toque.", "R2");
+    log("back", "Verifica reserva de " + b.title + ": nenhuma. Pode renovar.", "R1");
+    if (S.weak) {
+      later(700, function () { log("back", "Sem resposta do servidor. Pedido de 4,2 KB guardado na fila local.", "R4"); log("tela", "O card mostra só “Renovando…”. Nenhum erro técnico na tela.", "R4"); });
+      later(1500, function () { log("back", "Reenvio 1/3: sem sinal. Nova tentativa em seguida.", "R4"); });
+      later(2400, function () { log("back", "Sinal voltou. Reenvio 2/3 confirmado pelo servidor.", "R4"); });
+      later(2700, function () { finishRenew(b); });
+    } else {
+      later(800, function () { log("back", "Servidor confirmou a renovação até " + b.newDue + ".", "R3"); });
+      later(950, function () { finishRenew(b); });
+    }
+  }
+
+  function finishRenew(b) {
+    b.renewing = false; b.renewed = true;
+    S.ticketBook = b.id; S.screen = "ticket";
+    done();
+    log("tela", "Ticket de confiança: “Renovado até " + b.newDue + "” com QR code.", "R3");
+    log("back", "Ticket nº " + b.ticket + " salvo no aparelho para ver sem internet; aviso do próximo prazo agendado.", "R3");
+  }
+
+  function act(a, el) {
+    var id = el.getAttribute("data-id");
+    if (a === "renew") {
+      var b = book(id);
+      tap();
+      if (b.renewing) { log("back", "Toque repetido ignorado: o pedido já está na fila, sem duplicar.", "R4"); return; }
+      log("tela", "Toque no botão verde Renovar de " + b.title + ".", "R1");
+      if (S.debt) {
+        log("back", "Débito de R$ 2,00 bloqueia a renovação. Abre o popup em vez de um botão cinza.", "R2");
+        S.popup = "ask"; S.popupBook = b.id;
+        log("tela", "Popup na zona do polegar: valor, motivo e “Pagar com Pix e renovar”.", "R2");
+      } else startRenew(b, false);
+    } else if (a === "pay") {
+      tap();
+      S.popup = "paying";
+      log("tela", "Toque em “Pagar com Pix e renovar”.", "R2");
+      log("back", "Pix de R$ 2,00 gerado e enviado ao banco.", "R2");
+      later(1300, function () {
+        if (S.pixFail && S.pixTries === 0) {
+          S.pixTries++; S.popup = "error";
+          log("back", "O banco não confirmou o Pix no prazo.", "R2");
+          log("tela", "Erro explica o que fazer: “Pagamento não confirmado. Toque para tentar de novo.”", "R2");
+        } else {
+          S.popup = "paid"; S.debt = false;
+          log("back", "Pix confirmado. Débito quitado.", "R2");
+          later(700, function () { S.popup = null; startRenew(book(S.popupBook), true); });
+        }
+      });
+    } else if (a === "close") {
+      tap();
+      S.popup = null;
+      log("tela", "Popup fechado. O card continua mostrando “Débito pendente”.", "R2");
+    } else if (a === "ticket") {
+      tap();
+      S.ticketBook = id; S.screen = "ticket";
+      log("tela", "Ticket aberto a partir do card, mesmo sem internet.", "R3");
+    } else if (a === "return") {
+      var tb = book(S.ticketBook);
+      tb.returned = true;
+      log("tela", "Caio mostra o QR no balcão.", "R3");
+      log("back", "QR lido: devolução registrada na hora, sem fila e sem multa.", "R3");
+    } else if (a === "home") {
+      S.screen = "home";
+      log("tela", "Volta para a home. O card mostra o novo prazo.", "R1");
+    } else if (a === "notif") {
+      tap();
+      S.notif = false;
+      S.screen = "home"; S.popup = null; S.highlight = "calc";
+      log("tela", "Toque no aviso. O app abre direto no card do Cálculo I.", "R1");
+    } else if (a === "tab") {
+      tap();
+      S.screen = el.getAttribute("data-tab");
+      var names = { "old-home": "Início", "old-loans": "Empréstimos", "old-debts": "Débitos", "old-profile": "Perfil" };
+      log("tela", "Toque na aba " + names[S.screen] + ".", "");
+      if (S.screen === "old-debts") {
+        S.sawDebt = true; S.result = "fail";
+        log("dor", "A multa aparece aqui, longe do livro, e não há como pagar pelo app.", "E2 E3");
+      }
+    } else if (a === "old-renew") {
+      tap();
+      S.grayTaps++;
+      el.classList.add("shake");
+      log("dor", "Botão Renovar cinza: o toque não faz nada e nenhum motivo aparece.", "E1");
+      if (S.grayTaps === 2) log("dor", "Caio toca de novo, sem saber se o app travou. Mais bateria gasta.", "A2");
+      setTimeout(function () { el.classList.remove("shake"); }, 320);
+      renderLog(); renderPanel();
+      return;
+    }
+  }
+
+  screenEl.addEventListener("click", function (e) {
+    var el = e.target.closest("[data-act]");
+    if (!el || el.disabled) return;
+    act(el.getAttribute("data-act"), el);
+    render();
+  });
+
+  document.getElementById("btn-reset").addEventListener("click", function () { reset(S.preset); });
+  document.getElementById("btn-notif").addEventListener("click", function () {
+    if (S.mode === "antes") {
+      log("dor", "O app atual não envia aviso antes do vencimento.", "A3");
+      renderLog();
+      return;
+    }
+    S.notif = true;
+    log("back", "Aviso de vencimento enviado 48 h antes, com atalho para o card.", "R1");
+    render();
+  });
+
+  function renderScenes() {
+    var box = document.getElementById("scenes");
+    box.innerHTML = Object.keys(PRESETS).map(function (k) {
+      var p = PRESETS[k];
+      return '<button type="button" role="radio" aria-checked="' + (S.preset === k) + '" class="scene' + (p.old ? " old" : "") + (S.preset === k ? " on" : "") + '" data-preset="' + k + '"><b>' + p.label + '</b><span>' + p.desc + '</span></button>';
+    }).join("");
+  }
+  document.getElementById("scenes").addEventListener("click", function (e) {
+    var el = e.target.closest("[data-preset]");
+    if (el) reset(el.getAttribute("data-preset"));
+  });
+
+  reset("simples");
+
+  /* ---------------- cronômetro do pitch ---------------- */
+  var CUTS = [0, 22, 47, 71, 98];
+  var chips = document.querySelectorAll(".chip");
+  var bands = document.querySelectorAll("section.band");
+  var timerBtn = document.getElementById("timer"), timerV = document.getElementById("timer-v");
+  var tRun = false, tStart = 0, tId = null;
+
+  function mark(i) {
+    chips.forEach(function (c) { c.classList.toggle("on", +c.getAttribute("data-i") === i); });
+    bands.forEach(function (b) { b.classList.toggle("on", +b.getAttribute("data-i") === i); });
+  }
+  function tick() {
+    var el = (performance.now() - tStart) / 1000, left = 120 - el;
+    var a = Math.abs(Math.ceil(left));
+    timerV.textContent = (left < 0 ? "+" : "") + Math.floor(a / 60) + ":" + String(a % 60).padStart(2, "0");
+    timerBtn.classList.toggle("late", left < 0);
+    var i = 0;
+    CUTS.forEach(function (c, k) { if (el >= c) i = k; });
+    mark(i);
+  }
+  timerBtn.addEventListener("click", function () {
+    if (tRun) {
+      tRun = false; clearInterval(tId);
+      timerBtn.classList.remove("run", "late");
+      timerBtn.firstChild.textContent = "▶ ";
+      timerV.textContent = "2:00"; mark(-1);
+    } else {
+      tRun = true; tStart = performance.now();
+      timerBtn.classList.add("run");
+      timerBtn.firstChild.textContent = "■ ";
+      tick(); tId = setInterval(tick, 250);
+    }
+  });
+})();
+</script>
